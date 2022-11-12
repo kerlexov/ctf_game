@@ -13,6 +13,8 @@ import "@pankod/refine-antd/dist/styles.min.css";
 
 import { appwriteClient,authProvider } from "utility";
 import {LoginScreen} from "./pages/login/login";
+import {ChallengesList} from "./pages/challenge/list";
+import {ChallengesCreate} from "./pages/challenge";
 
 const App: React.FC = () => {
     return (
@@ -30,6 +32,10 @@ const App: React.FC = () => {
             resources={[
                 {
                     name: "636fb211985274ef42f2",
+                    create: ChallengesCreate,
+                    list: ChallengesList,
+                   // edit: PostsEdit,
+                   // show: PostsShow,
                     options: {
                         label: "Challange",
                     },

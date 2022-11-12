@@ -1,4 +1,4 @@
-export interface ICategory {
+export interface IChallengeCategory {
     id: string;
     title: string;
 }
@@ -13,18 +13,22 @@ export interface IFile {
     url: string;
 }
 
-export interface IPost {
+export interface IChallenge {
     id: string;
-    title: string;
-    content: string;
-    categoryId: string;
-    images: string;
+    name: string;
+    points: number;
+    difficulty: string;
+    description: string;
+    flag: string;
+    challangeCategoryID: string;
 }
 
-export interface IPostVariables {
+export interface IChallengeVariables {
     id: string;
-    title: string;
-    content: string;
-    categoryId: string;
-    images: string;
+    name: string;
+    points: number;
+    difficulty: string;
+    description: string;
+    flag: string;
 }
+
