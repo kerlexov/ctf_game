@@ -39,9 +39,12 @@ Refine offers lots of out-of-the box functionality for rapid development, withou
 
 To learn more about **refine**, please check out the [Documentation](https://refine.dev/docs)
 
-- **Material UI** [Docs](https://refine.dev/docs/ui-frameworks/mui/tutorial/)
-- **React Router** [Docs](https://refine.dev/docs/core/providers/router-provider/)
-- **REST Data Provider** [Docs](https://refine.dev/docs/core/providers/data-provider/#overview)
+- **Ant Design** [Docs](https://refine.dev/docs/ui-frameworks/antd/tutorial/)
+- **Ant Design Custom Theme** [Docs](https://refine.dev/docs/ui-frameworks/antd/customization/antd-custom-theme/)
+- **Appwrite Data Provider** [Docs](https://refine.dev/docs/core/providers/data-provider/#overview)
+- **Custom Layout** [Docs](https://refine.dev/docs/ui-frameworks/antd/customization/antd-custom-layout/)
+- **KBar Command Palette** [Docs](https://github.com/pankod/refine/tree/next/examples/commandPalette/kbar)
+- **i18n** [Docs](https://refine.dev/docs/core/providers/i18n-provider/)
 
 
 ## License

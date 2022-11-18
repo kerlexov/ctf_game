@@ -11,7 +11,6 @@ import {
     Button,
     Checkbox,
 } from "@pankod/refine-antd";
-import "./styles.css";
 
 const { Text, Title } = Typography;
 export interface ILoginForm {
@@ -42,9 +41,7 @@ export const LoginScreen: React.FC = () => {
             >
                 <Col xs={22}>
                     <div className="container">
-                        <div className="imageContainer">
-                            <img src="./logo.svg" alt="Logo" />
-                        </div>
+
                         <Card title={CardTitle} headStyle={{ borderBottom: 0 }}>
                             <Form<ILoginForm>
                                 layout="vertical"
@@ -55,8 +52,6 @@ export const LoginScreen: React.FC = () => {
                                 requiredMark={false}
                                 initialValues={{
                                     remember: false,
-                                    email: "demo@refine.dev",
-                                    password: "demodemo",
                                 }}
                             >
                                 <Form.Item
