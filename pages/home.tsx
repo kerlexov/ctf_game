@@ -2,6 +2,7 @@ import React from "react";
 import {AntdLayout, Button, Card, Checkbox, Col, Form, Input, Row} from "@pankod/refine-antd";
 import {useLogin} from "@pankod/refine-core";
 import {ILoginForm} from "./login/login";
+import CustomDocument from "./_document";
 
 export const HomeScreen: React.FC = () => {
     return (
@@ -18,3 +19,4 @@ export const HomeScreen: React.FC = () => {
         </AntdLayout>
     );
 };
+export default HomeScreen;

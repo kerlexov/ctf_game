@@ -11,6 +11,7 @@ import {
     Button,
     Checkbox,
 } from "@pankod/refine-antd";
+import CustomDocument from "../_document";
 
 const { Text, Title } = Typography;
 export interface ILoginForm {
@@ -122,3 +123,4 @@ export const LoginScreen: React.FC = () => {
         </AntdLayout>
     );
 };
+export default LoginScreen;
