@@ -7,7 +7,6 @@ const pluginAntdLess = withAntdLess({
 });
 
 module.exports = withPlugins([[pluginAntdLess]], {
-  reactStrictMode: false,
-  swcMinify: true,
   i18n,
+  distDir: 'build',
 });
