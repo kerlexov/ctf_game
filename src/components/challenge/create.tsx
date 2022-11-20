@@ -7,8 +7,6 @@ import {
     Input,
 } from "@pankod/refine-antd";
 import { IChallengeCreate } from "src/interfaces";
-import {ILoginForm} from "../../../pages/login/login";
-
 export const ChallengeCreate: React.FC = () => {
 
     const { formProps, saveButtonProps } = useForm<IChallengeCreate>();

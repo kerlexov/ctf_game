@@ -3,18 +3,15 @@ import { AppProps } from "next/app";
 import { Refine } from "@pankod/refine-core";
 import {
   notificationProvider,
-  ReadyPage,
   ErrorComponent,
-  AuthPage,
 } from "@pankod/refine-antd";
 import routerProvider from "@pankod/refine-nextjs-router";
 require("antd/dist/antd.less");
 
-import { dataProvider, liveProvider } from "@pankod/refine-appwrite";
 import { RefineKbarProvider } from "@pankod/refine-kbar";
 import { appWithTranslation, useTranslation } from "next-i18next";
 import { authProvider } from "src/authProvider";
-import {appwriteClient, customDataProvider, options, resources} from "src/utility";
+import { customDataProvider} from "src/utility";
 import {
   Title,
   Header,
