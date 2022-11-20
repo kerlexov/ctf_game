@@ -9,4 +9,7 @@ const pluginAntdLess = withAntdLess({
 module.exports = withPlugins([[pluginAntdLess]], {
   i18n,
   distDir: 'build',
+  experimental: {
+    newNextLinkBehavior: true,
+  },
 });

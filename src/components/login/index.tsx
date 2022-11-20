@@ -1,5 +1,5 @@
 import React from "react";
-import { useLogin } from "@pankod/refine-core";
+import {useLogin, useTranslate} from "@pankod/refine-core";
 import {
     Row,
     Col,
@@ -11,7 +11,6 @@ import {
     Button,
     Checkbox,
 } from "@pankod/refine-antd";
-import CustomDocument from "../_document";
 
 const { Text, Title } = Typography;
 export interface ILoginForm {
@@ -38,6 +37,8 @@ export const LoginScreen: React.FC = () => {
                 align="middle"
                 style={{
                     height: "100vh",
+                    width: "50vw",
+                    transform: "translate(50%,0%)",
                 }}
             >
                 <Col xs={22}>

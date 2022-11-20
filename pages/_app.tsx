@@ -23,9 +23,7 @@ import {
   Layout,
   OffLayoutArea,
 } from "@components/layout";
-import {ChallengeList} from "@components";
-import {LoginScreen} from "./login/login";
-import {HomeScreen} from "./home";
+import {ChallengeCreate, ChallengeList,LoginScreen,HomeScreen} from "@components";
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   const { t, i18n } = useTranslation();
@@ -43,10 +41,7 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
         authProvider={authProvider}
         dataProvider={customDataProvider}
         notificationProvider={notificationProvider}
-        options={{ syncWithLocation: true, disableTelemetry: true, liveMode: "auto" }}
-          // liveProvider={liveProvider(appwriteClient, {
-          //   databaseId: options.databaseId,
-          // })}
+        options={{ syncWithLocation: true, disableTelemetry: true }}
         LoginPage={LoginScreen}
         DashboardPage={HomeScreen}
         Title={Title}
@@ -59,11 +54,11 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
           {
             name: "challenge",
             list: ChallengeList,
-            //create: ChallengeCreate,
+            create: ChallengeCreate,
             // edit: PostEdit,
             // show: PostShow,
             options: {
-              label: "Challenges",
+              label: "Challenge",
             },
           },
         ]}

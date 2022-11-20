@@ -14,7 +14,7 @@
     "@pankod/refine-core": "^3.18.0",
     "@pankod/refine-kbar": "^0.8.0",
     "@pankod/refine-nextjs-router": "^3.18.0",
-    "next": "^12.1.6",
+    "next": "^13.0.3",
     "next-compose-plugins": "^2.2.1",
     "next-i18next": "^8.9.0",
     "next-plugin-antd-less": "^1.4.3",

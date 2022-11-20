@@ -1,8 +1,5 @@
 import React from "react";
-import {AntdLayout, Button, Card, Checkbox, Col, Form, Input, Row} from "@pankod/refine-antd";
-import {useLogin} from "@pankod/refine-core";
-import {ILoginForm} from "./login/login";
-import CustomDocument from "./_document";
+import {AntdLayout, Row} from "@pankod/refine-antd";
 
 export const HomeScreen: React.FC = () => {
     return (
