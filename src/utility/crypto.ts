@@ -35,5 +35,5 @@ export function encryptVault({vaultKey,vault }: {
     vaultKey: string;
     vault: string;
 }) {
-    return AES.encrypt(JSON.stringify(vault), vaultKey).toString();
+    return AES.encrypt(vault, vaultKey).toString();
 }
