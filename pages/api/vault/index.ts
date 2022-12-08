@@ -12,7 +12,7 @@ const handler = (req:any, res:any) => {
             vaultClient.token = result.auth.client_token;
         });
 
-        vaultClient.write("secret/ctf/"+hashData(req.body.name), JSON.stringify({encFlag: req.body.encFlag, flag: dec})).then((r:any) =>{
+        vaultClient.write("secret/ctf/"+hashData(req.body.name), {encFlag: req.body.encFlag, flag: dec}).then((r:any) =>{
             console.log("ovo je vault response")
             console.log(r)
             res.status(200).json({ data: r})
