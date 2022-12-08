@@ -7,9 +7,11 @@ import {
 
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import {authProvider} from "../src/authProvider";
-import {dataProvider} from "@pankod/refine-appwrite";
-import {appwriteClient, options} from "../src/utility";
-
+import {customDataProvider, parseResource} from "../src/utility";
+import fs from 'fs';
+import vault from 'vault-api';
+import axios from "axios";
+import {getEngineName} from "vault-api/dist/core/mounts";
 
 export const getServerSideProps: GetServerSideProps<
     { initialData?: unknown },
@@ -27,31 +29,71 @@ export const getServerSideProps: GetServerSideProps<
   }
   // customize
   try {
+
+    // switch(resource) {
+    //   case "challenge": {
+    //     switch (action) {
+    //       case "show":{
+    //           if(id){
+    //             console.log("tusamuso")
+    //             const data = await customDataProvider.getOne({
+    //               // we're slicing the resource param to get the resource name from the last part
+    //               resource,
+    //               id,
+    //             });
+    //             console.log(data)
+    //
+    //             return {
+    //               props: {
+    //                 initialData: data,
+    //                 ...(await serverSideTranslations(context.locale ?? "en", ["common"])),
+    //               },
+    //             };
+    //           }
+    //         break;
+    //       }
+    //
+    //       default: {
+    //         break;
+    //       }
+    //     }
+    //
+    //     break;
+    //   }
+    //
+    //   default: {
+    //     break;
+    //   }
+    // }
     if (resource && action === "show" && id) {
-      const data = await dataProvider(appwriteClient,options).getOne({
-        // we're slicing the resource param to get the resource name from the last part
-        resource: resource.slice(resource.lastIndexOf("/") + 1),
-        id,
-      });
+        console.log(resource)
+        console.log(action)
+        console.log(id)
+        const data = await customDataProvider.getOne({
+          // we're slicing the resource param to get the resource name from the last part
+          resource: parseResource(resource),
+          id,
+        });
 
-      return {
-        props: {
-          initialData: data,
-          ...(await serverSideTranslations(context.locale ?? "en", ["common"])),
-        },
-      };
+        console.log(data)
+        return {
+          props: {
+            initialData: data,
+            ...(await serverSideTranslations(context.locale ?? "en", ["common"])),
+          },
+        };
     } else if (resource && !action && !id) {
-      const data = await dataProvider(appwriteClient,options).getList({
-        // we're slicing the resource param to get the resource name from the last part
-        resource: resource.slice(resource.lastIndexOf("/") + 1),
-      });
+        const data = await customDataProvider.getList({
+          // we're slicing the resource param to get the resource name from the last part
+          resource: resource,
+        });
 
-      return {
-        props: {
-          initialData: data,
-          ...(await serverSideTranslations(context.locale ?? "en", ["common"])),
-        },
-      };
+        return {
+          props: {
+            initialData: data,
+            ...(await serverSideTranslations(context.locale ?? "en", ["common"])),
+          },
+        };
     }
   } catch (error) {
     return { props: {

@@ -1,9 +1,10 @@
 import {Account, Appwrite, dataProvider, Storage} from "@pankod/refine-appwrite";
 
 const APPWRITE_URL = "https://kbc.cloud.karber.hr/v1";
-const APPWRITE_PROJECT = "636f9a36b34e820c15e8";
-const DATABASE_ID = "636fb1bbc8d1f78b47a1";
-const RESOURCE_CHALLENGE = "636fb211985274ef42f2";
+const APPWRITE_PROJECT = "637e412ccb434aa524ad";
+const DATABASE_ID = "63802129cb88edc7526f";
+const RESOURCE_CHALLENGE = "6380213352b807797847";
+const BUCKET_ID = "6388f55adfd672515271";
 
 const appwriteClient = new Appwrite();
 
@@ -16,6 +17,18 @@ const customDataProvider = dataProvider(appwriteClient, {
     databaseId: DATABASE_ID,
 });
 
-const resources = { challenge: RESOURCE_CHALLENGE}
+export function parseResource(resource: string) {
+    switch (resource){
+        case "challenge": {
+           return resources.challenge
+        }
+        default:{
+            break;
+        }
+    }
+    return "";
+}
 
-export { appwriteClient, account, storage, options, resources,customDataProvider };
+const resources = {  challenge: RESOURCE_CHALLENGE}
+
+export { appwriteClient, account, storage, options, resources,customDataProvider,BUCKET_ID };

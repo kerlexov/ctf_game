@@ -11,7 +11,7 @@ export const HomeScreen: React.FC = () => {
                     height: "100vh",
                 }}
             >
-                <div>Wellcome hacker!</div>
+                <div>Welcome hacker!</div>
             </Row>
         </AntdLayout>
     );

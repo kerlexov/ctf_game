@@ -20,7 +20,12 @@ import {
   Layout,
   OffLayoutArea,
 } from "@components/layout";
-import {ChallengeCreate, ChallengeList,LoginScreen,HomeScreen} from "@components";
+
+import ChallengeCreate from "@components/challenge/create";
+import ChallengeList from "@components/challenge/list";
+import LoginScreen from "@components/login/index";
+import HomeScreen from "@components/home/home";
+import {ChallengeShow} from "@components";
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   const { t, i18n } = useTranslation();
@@ -38,7 +43,10 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
         authProvider={authProvider}
         dataProvider={customDataProvider}
         notificationProvider={notificationProvider}
-        options={{ syncWithLocation: true, disableTelemetry: true }}
+        options={{
+        //  syncWithLocation: true,
+          disableTelemetry: true,
+        }}
         LoginPage={LoginScreen}
         DashboardPage={HomeScreen}
         Title={Title}
@@ -52,13 +60,14 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
             name: "challenge",
             list: ChallengeList,
             create: ChallengeCreate,
+            show: ChallengeShow,
             // edit: PostEdit,
-            // show: PostShow,
             options: {
               label: "Challenge",
             },
           },
         ]}
+
         Layout={Layout}
         catchAll={<ErrorComponent />}
       >

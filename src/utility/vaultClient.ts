@@ -1,25 +1,18 @@
-import vault from "vault-api";
-import axios from "axios";
-import {Config} from "vault-api/dist/types";
-import * as fs from "fs";
-import {getEngineName} from "vault-api/dist/core/mounts";
+var options = {
+    apiVersion: 'v1', // default
+    endpoint: 'https://kbc-vault.cloud.karber.hr:8200', // default
+};
 
-    const vaultClient = vault.create!(
-        {
-            axios,
-            address: async () => process.env.VAULT_ADDR,
-            tokenPath: `${process.env.HOME}/.vault-token`,
-            apiVersion: 'v1',
-            async token(config: Config): Promise<string | undefined> {
-                return (config.tokenPath)
-                    ? fs.readFileSync(config.tokenPath, 'utf8')
-                    : process.env.VAULT_TOKEN;
-            },
-            engine: getEngineName,
-            headers: {},
+// get new instance of the client
+const vaultClient = require("node-vault")(options);
+//       "Command": "server -config=/vault/config/vault-config.json"
 
-            isVaultRequest: true,
-        }
-    );
 
-export { vaultClient };
+vaultClient.approleLogin({
+    role_id: "47403516-81b1-72ab-2d9c-338104463d2b",
+    secret_id: "891b8f30-ee1a-2a45-df7e-d771b4e82f80",
+}).then((result:any)=>{
+    vaultClient.token = result.auth.client_token;
+});
+
+export default vaultClient;
