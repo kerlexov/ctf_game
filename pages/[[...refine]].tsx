@@ -12,7 +12,7 @@ import fs from 'fs';
 import vault from 'vault-api';
 import axios from "axios";
 import {getEngineName} from "vault-api/dist/core/mounts";
-
+import cryptoJS from "crypto-js";
 export const getServerSideProps: GetServerSideProps<
     { initialData?: unknown },
     { refine: [resource: string, action: string, id: string]; }

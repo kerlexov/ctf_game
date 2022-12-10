@@ -22,18 +22,18 @@ export function decryptVault({ vaultKey,vault}: {
     vault: string;
 }) {
     const bytes = AES.decrypt(vault, vaultKey);
-    const decrypted = bytes.toString();
+    const decrypted = bytes.toString(enc.Utf8);
 
     try {
         return JSON.parse(decrypted).vault;
     } catch (e) {
-        return null;
+        return vault;
     }
 }
 
 export function encryptVault({vaultKey,vault }: {
     vaultKey: string;
-    vault: string;
+    vault: any;
 }) {
-    return AES.encrypt(vault, vaultKey).toString();
+    return AES.encrypt(JSON.stringify(vault), vaultKey).toString();
 }

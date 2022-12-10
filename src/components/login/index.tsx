@@ -14,11 +14,14 @@ import {
     Form,
     Input,
     Button,
-    Checkbox, notificationProvider,
+    Checkbox, notificationProvider, Spin,
 } from "@pankod/refine-antd";
 import {ILoginForm, IRegisterForm} from "../../interfaces";
+import {hashData} from "../../utility";
+import {LoadingOutlined} from "@ant-design/icons";
 
 const {Text, Title} = Typography;
+const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
 const titleStyles: CSSProperties = {
     textAlign: "center",
@@ -59,11 +62,11 @@ export const LoginScreen: React.FC = (context) => {
     const {isSuccess, isLoading} = useAuthenticated();
     const {list} = useNavigation()
 
-    if(isRegisterSuccess){
+    if(isRegisterSuccess && registerDone){
         notificationProvider.open({message:"Register successful",key:"regis",type:"success"})
         setIsLogin(true)
     }
-    if(isLoginSuccess|| isSuccess){
+    if(isLoginSuccess || isSuccess){
         notificationProvider.open({message:"Login successful",key:"logis",type:"success"})
         list("challenge")
     }
@@ -89,7 +92,7 @@ export const LoginScreen: React.FC = (context) => {
             </Row>
         </AntdLayout>);
     } else {
-        return (<></>)
+        return (<><Spin indicator={antIcon} /></>)
     }
 
     function RenderLogin() {
@@ -98,7 +101,9 @@ export const LoginScreen: React.FC = (context) => {
                 <Form<ILoginForm>
                     layout="vertical"
                     form={loginForm}
-                    onFinish={login}
+                    onFinish={(values)=>{
+                        login({email:values.email,password: hashData(values.password),remember: values.remember})
+                    }}
                     requiredMark={true}
                     initialValues={{
                         remember: false,
@@ -179,7 +184,7 @@ export const LoginScreen: React.FC = (context) => {
                     form={registerForm}
                     onFinish={(values) => {
                         if(!registerDone){
-                            register(values)
+                            register({create_email:values.create_email,create_password:hashData(values.create_password),create_name: values.create_name})
                             setRegisterDone(true)
                         }
                     }}

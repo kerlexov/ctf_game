@@ -4,9 +4,8 @@ import vaultClient from "../../../src/utility/vaultClient";
 const handler = (req:any, res:any) => {
     if (req.method === 'POST') {
     //name,author,encFlag,
-        const dec = decryptVault({vaultKey:req.body.encFlag,vault: hashData(req.body.name+"_"+sec+"_"+req.body.author)})
-
-        vaultClient.write("secret/ctf/"+hashData(req.body.name), {encFlag: req.body.encFlag, flag: dec}).then((r:any) =>{
+        const dec = decryptVault({vault:req.body.encFlag, vaultKey: hashData(req.body.name+"_"+sec+"_"+req.body.author)})
+        vaultClient.write("secret/data/ctf/app/"+hashData(req.body.name), {data:{encFlag: req.body.encFlag, flag: dec}}).then((r:any) =>{
             console.log("ovo je vault response")
             console.log(r)
             res.status(200).json({ data: r})

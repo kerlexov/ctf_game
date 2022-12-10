@@ -123,7 +123,7 @@ export const ChallengeCreate: React.FC<IResourceComponentsProps> = () => {
     );
 };
 
-export async function Write(name: string,author: string,flag:string,salt: string){
+export async function Write(name: string, author: string, flag: string, salt: string){
     const encFlag = encryptVault({vault:flag,vaultKey: salt})
     const resp = await fetch('/api/vault',{
         method: "POST",
