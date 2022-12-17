@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@creditkarma/vault-client": "^1.0.0",
-    "@pankod/refine-antd": "^3.18.0",
+    "@pankod/refine-antd": "^3.68.0",
     "@pankod/refine-appwrite": "^5.1.0",
     "@pankod/refine-core": "^3.18.0",
     "@pankod/refine-kbar": "^0.8.0",

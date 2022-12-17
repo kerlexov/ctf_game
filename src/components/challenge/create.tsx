@@ -11,15 +11,14 @@ import {BUCKET_ID, encryptVault, hashData, normalizeFile, resources, sec, storag
 import {HttpError, IResourceComponentsProps, useGetIdentity, useNavigation} from "@pankod/refine-core";
 
 export const ChallengeCreate: React.FC<IResourceComponentsProps> = () => {
-    const {list} = useNavigation();
+    const { goBack } = useNavigation();
     const {formProps, saveButtonProps} = useForm<IChallengeCreate,
         HttpError,
         IChallengeCreate>({
             action: "create",
             resource: resources.challenge,
-            onMutationSuccess: (data) => {
-                list("challenge")
-            }
+            redirect: false,
+            onMutationSuccess: () => goBack()
         }
     );
     // const { selectProps: categorySelectProps } = useSelect<IChallengeCreate>({
@@ -88,10 +87,10 @@ export const ChallengeCreate: React.FC<IResourceComponentsProps> = () => {
                                                       onSuccess,
                                                   }) => {
                                 try {
-                                    const rcFile = file as RcFile;
+                                    let rcFile = file as RcFile;
                                     const {$id} = await storage.createFile(
                                         BUCKET_ID,
-                                        rcFile.name,
+                                        rcFile.uid,
                                         rcFile,
                                     );
 
@@ -135,6 +134,6 @@ export async function Write(name: string, author: string, flag: string, salt: st
         }
     })
     const datarsp = await resp.json()
-    console.log(datarsp)
+    //console.log(datarsp)
 }
 export default ChallengeCreate;

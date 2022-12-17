@@ -38,3 +38,15 @@ export interface IRegisterForm {
     create_email: string;
     create_password: string;
 }
+
+
+
+export interface UploadFiles {
+    uid:     string;
+    name:    string;
+    url:     string;
+    type:    string;
+    size:    number;
+    percent: number;
+    status:  string;
+}

@@ -29,72 +29,54 @@ export const getServerSideProps: GetServerSideProps<
   }
   // customize
   try {
+    if(id) {
+      switch (resource) {
+        case "challenge": {
+          switch (action) {
+            case "show": {
+              const data = await customDataProvider.getOne({
+                resource: parseResource(resource),
+                id,
+              });
 
-    // switch(resource) {
-    //   case "challenge": {
-    //     switch (action) {
-    //       case "show":{
-    //           if(id){
-    //             console.log("tusamuso")
-    //             const data = await customDataProvider.getOne({
-    //               // we're slicing the resource param to get the resource name from the last part
-    //               resource,
-    //               id,
-    //             });
-    //             console.log(data)
-    //
-    //             return {
-    //               props: {
-    //                 initialData: data,
-    //                 ...(await serverSideTranslations(context.locale ?? "en", ["common"])),
-    //               },
-    //             };
-    //           }
-    //         break;
-    //       }
-    //
-    //       default: {
-    //         break;
-    //       }
-    //     }
-    //
-    //     break;
-    //   }
-    //
-    //   default: {
-    //     break;
-    //   }
-    // }
-    if (resource && action === "show" && id) {
-        console.log(resource)
-        console.log(action)
-        console.log(id)
-        const data = await customDataProvider.getOne({
-          // we're slicing the resource param to get the resource name from the last part
-          resource: parseResource(resource),
-          id,
-        });
+              return {
+                props: {
+                  initialData: data,
+                  ...(await serverSideTranslations(context.locale ?? "en", ["common"])),
+                },
+              };
+              break;
+            }
 
-        console.log(data)
-        return {
-          props: {
-            initialData: data,
-            ...(await serverSideTranslations(context.locale ?? "en", ["common"])),
-          },
-        };
-    } else if (resource && !action && !id) {
-        const data = await customDataProvider.getList({
-          // we're slicing the resource param to get the resource name from the last part
-          resource: resource,
-        });
+            case "delete": {
+              const data = await customDataProvider.deleteOne({
+                resource: parseResource(resource),
+                id
+              });
 
-        return {
-          props: {
-            initialData: data,
-            ...(await serverSideTranslations(context.locale ?? "en", ["common"])),
-          },
-        };
+              return {
+                props: {
+                  initialData: data,
+                  ...(await serverSideTranslations(context.locale ?? "en", ["common"])),
+                },
+              };
+              break;
+            }
+
+            default: {
+              break;
+            }
+          }
+
+          break;
+        }
+
+        default: {
+          break;
+        }
+      }
     }
+
   } catch (error) {
     return { props: {
         initialData: {},
@@ -110,7 +92,7 @@ export const getServerSideProps: GetServerSideProps<
   };
 };
 
-export default NextRouteComponent;
+export default NextRouteComponent.bind({initialRoute:"/challenge"});
 
 
 /**
