@@ -98,7 +98,7 @@ export const ChallengeShow: React.FC<
 
 export async function VerifyAnswer(name: string, author: string, flag: string, identity: string, points: number, cid: string){
     const encFlag = hashData(flag)
-    const resp = await fetch('/api/vault/verify',{
+    const resp = await fetch('https://ctf-game.vercel.app/api/vault/verify',{
         method: "POST",
         body: JSON.stringify({
             name,author,encFlag, identity, points,cid

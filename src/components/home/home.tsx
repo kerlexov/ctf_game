@@ -5,7 +5,6 @@ import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
 import {GetServerSideProps} from "next";
 import {checkAuthentication} from "@pankod/refine-nextjs-router";
 import {authProvider} from "../../authProvider";
-import {serverSideTranslations} from "next-i18next/serverSideTranslations";
 
 export const HomeScreen: React.FC<ScoreboardProps> = (props, context) => {
 
@@ -29,7 +28,7 @@ export const HomeScreen: React.FC<ScoreboardProps> = (props, context) => {
     useEffect(()=>{
 
         if(!loaded){
-         fetch('/api/scoreboard', {
+         fetch('https://ctf-game.vercel.app/api/scoreboard', {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json'
@@ -80,7 +79,7 @@ export const getServerSideProps:  GetServerSideProps<ScoreboardProps> = async (c
             return props;
         }
 
-        const resp = await fetch('/api/scoreboard', {
+        const resp = await fetch('https://ctf-game.vercel.app/api/scoreboard', {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json'

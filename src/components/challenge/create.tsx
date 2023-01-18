@@ -154,7 +154,7 @@ export const ChallengeCreate: React.FC<IResourceComponentsProps> = () => {
 };
 
 export async function Write(name: string, id: string, flag: string, values: IChallengeCreate){
-    const req = await fetch('/api/vault/create',{
+    const req = await fetch('https://ctf-game.vercel.app/api/vault/create',{
         method: "POST",
         body: JSON.stringify({
           encFlag:hashData(flag),name,id:hashData(id),values
@@ -163,9 +163,12 @@ export async function Write(name: string, id: string, flag: string, values: ICha
             'Content-Type':'application/json'
         }
     })
-    const res = await req.json()
-    console.log("res")
-    console.log(res)
+    console.log(req)
+    const res = await req.json().catch((e)=>{
+        console.log(e)
+        return false
+    })
+
     if(res.success){
         return true
 
