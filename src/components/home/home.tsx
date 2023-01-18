@@ -1,12 +1,14 @@
 import React, {useEffect, useMemo, useState} from "react";
-import {AntdLayout, Button, Row} from "@pankod/refine-antd";
+import {AntdLayout, Button, Row, Spin} from "@pankod/refine-antd";
 import {ResultRecordData, ScoreboardProps} from "../../interfaces";
 import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
 import {GetServerSideProps} from "next";
 import {checkAuthentication} from "@pankod/refine-nextjs-router";
 import {authProvider} from "../../authProvider";
+import {LoadingOutlined} from "@ant-design/icons";
 
 export const HomeScreen: React.FC<ScoreboardProps> = (props, context) => {
+    const antIcon = <LoadingOutlined style={{ fontSize: 64,color: "purple" }} spin />;
 
     const columns = useMemo<MRT_ColumnDef<ResultRecordData>[]>(
         () => [
@@ -63,7 +65,7 @@ export const HomeScreen: React.FC<ScoreboardProps> = (props, context) => {
                     enableBottomToolbar={false}
                     enableTopToolbar={false}
                     muiTableBodyRowProps={{ hover: false }}
-                />):(<></>)}
+                />):(<><Spin indicator={antIcon} /></>)}
 
             </Row>
         </AntdLayout>

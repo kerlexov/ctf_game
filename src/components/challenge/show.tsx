@@ -17,6 +17,7 @@ export const ChallengeShow: React.FC<
     IResourceComponentsProps<GetOneResponse<IChallenge>>
     > = ({ initialData }) => {
 
+    console.log(initialData)
     const record = initialData?.data
 
     const [answer, setAnswer] = useState("")
