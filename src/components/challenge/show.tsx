@@ -8,9 +8,8 @@ import {
 } from "@pankod/refine-core";
 import {Show, Typography, Tag, Button, Card, Input, Col, Row, notificationProvider} from "@pankod/refine-antd";
 import React, {useState} from "react";
-import {IChallenge, IFile, UploadFiles} from "../../interfaces";
-import {customDataProvider, encryptVault, hashData, mask, resources} from "../../utility";
-import {GetServerSideProps} from "next";
+import {IChallenge, UploadFiles} from "../../interfaces";
+import { hashData} from "../../utility";
 import {Convert} from "../../utility/convert";
 const { Title, Text } = Typography;
 
@@ -18,11 +17,6 @@ export const ChallengeShow: React.FC<
     IResourceComponentsProps<GetOneResponse<IChallenge>>
     > = ({ initialData }) => {
 
-// export const ChallengeShow: React.FC = () => {
-//     const { queryResult } = useShow({
-//         resource: resources.challenge
-//     });
-//     const { data, isLoading } = queryResult;
     const record = initialData?.data
 
     const [answer, setAnswer] = useState("")
@@ -30,8 +24,6 @@ export const ChallengeShow: React.FC<
 
     function RenderFiles(raw: any) {
         const uploadFiles = Convert.toUploadFiles(raw);
-        //console.table(result)
-        //console.table(uploadFiles)
         return uploadFiles.map((v:UploadFiles,i:number,a:UploadFiles[])=>{
             return <><a href={v.url} download>
                 <button style={{margin:"2em"}}>Dowload file <Tag>{v.name}</Tag></button>
@@ -70,15 +62,7 @@ export const ChallengeShow: React.FC<
                 <Text>
                     {record?.description}
                 </Text>
-
-
-
-
-
-
-
             </Card>
-
 
             <Card style={{marginTop:"2em"}}>
                 <Input placeholder="Flag(THIS_IS_FLAG)" name="inputFlag"
@@ -89,19 +73,20 @@ export const ChallengeShow: React.FC<
 
                 </Input>
                 <Button style={{marginTop:"2em"}} onClick={()=>{
-                    console.log(record)
-                    console.log(answer)
-                    VerifyAnswer(record?.name!, record?.author_id!, answer, identity,record?.points!,record?.id!)
-                        .then((r) =>{
-                            if(r){
-                                notificationProvider.open({message:"Congrats, challenge solved",key:"challenge_success",type:"success"})
-                            }else {
-                                notificationProvider.open({message:"Wrong answer, try again",key:"challenge_fail",type:"error"})
-                            }
-                        })
-                        .catch((e)=>{
-                            console.log(e)
-                        })
+                    if(record?.name&&record.author_id&&answer&&identity&&record.points&&record.id){
+                        VerifyAnswer(record?.name!, record?.author_id!, answer, identity,record?.points!,record?.id!)
+                            .then((r) =>{
+                                if(r){
+                                    notificationProvider.open({message:"Congrats, challenge solved",key:"challenge_success",type:"success"})
+                                }else {
+                                    notificationProvider.open({message:"Wrong answer, try again",key:"challenge_fail",type:"error"})
+                                }
+                            })
+                            .catch((e)=>{
+                                console.log(e)
+                                notificationProvider.open({message:"Error occurred, try again",key:"challenge_err",type:"error"})
+                            })
+                    }
                 }}>
                     SOLVE
                 </Button>
@@ -123,26 +108,8 @@ export async function VerifyAnswer(name: string, author: string, flag: string, i
         }
     })
     const datarsp = await resp.json()
-
     return datarsp.correct
     //console.log(datarsp)
 }
 export default ChallengeShow;
 
-// export const getServerSideProps: GetServerSideProps = async (context) => {
-//     const { parsedCurrent, parsedPageSize, parsedSorter, parsedFilters } =
-//         parseTableParamsFromQuery(context.query);
-//
-//     console.log(parsedCurrent)
-//     console.log(parsedPageSize)
-//     console.log(parsedSorter)
-//     console.log(parsedFilters)
-//     const data = await customDataProvider.getOne({
-//         resource: resources.challenge,
-//         id: "1"
-//     });
-//
-//     return {
-//         props: { initialData: data },
-//     };
-// };

@@ -18,5 +18,6 @@ namespace NodeJS {
         VRID: string
         VURL: string
         AWSID: string
+        HOKI: string
     }
 }

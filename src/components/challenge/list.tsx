@@ -13,6 +13,7 @@ import React from "react";
 import {IChallenge} from "../../interfaces";
 import {checkAuthentication} from "@pankod/refine-nextjs-router";
 import {authProvider} from "../../authProvider";
+import {Permission, Role} from "appwrite";
 
 export const ChallengeList: React.FC<
     IResourceComponentsProps<GetListResponse<IChallenge>>
@@ -22,6 +23,16 @@ export const ChallengeList: React.FC<
         queryOptions: {
             initialData,
         },
+        metaData: {
+            writePermissions: [Permission.write(Role.users())],
+            readPermissions: [Permission.read(Role.users())],
+            updatePermission: [],
+            deletePermission: [],
+            // Permission.read(Role.any()),                  // Anyone can view this document
+            // Permission.update(Role.team("writers")),      // Writers can update this document
+            // Permission.update(Role.team("admin")),       // Admins can update this document
+            // Permission.delete(Role.user("5c1f88b42259e"))
+        }
     });
 
     return (

@@ -39,7 +39,6 @@ const handler = async (req: any, res: any) => {
                                     name: u.name,
                                     points: resultRecord[hashData(u.$id)],
                                 }
-                                console.log(nes)
                                 final.push(nes)
                             }
                         })
@@ -104,5 +103,3 @@ const handler = async (req: any, res: any) => {
 }
 
 export default handler;
-
-[{"uid":"75bb554662e9a29a7c89ae0982fb010dbb3aa557caa43bfe97ded8385d4ef3ea","points":10},{"uid":"75bb554662e9a29a7c89ae0982fb010dbb3aa557caa43bfe97ded8385d4ef3ea","points":33},{"uid":"b98e37dcfffe768460d219aac208acdc5fe348abe0f592656963bb9081318bf6","points":33}]

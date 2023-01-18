@@ -13,6 +13,7 @@ import vault from 'vault-api';
 import axios from "axios";
 import {getEngineName} from "vault-api/dist/core/mounts";
 import cryptoJS from "crypto-js";
+import {Permission, Role} from "appwrite";
 export const getServerSideProps: GetServerSideProps<
     { initialData?: unknown },
     { refine: [resource: string, action: string, id: string]; }
@@ -37,6 +38,12 @@ export const getServerSideProps: GetServerSideProps<
               const data = await customDataProvider.getOne({
                 resource: parseResource(resource),
                 id,
+                metaData: {
+                  writePermissions: [Permission.write(Role.users())],
+                  readPermissions: [Permission.read(Role.users())],
+                  updatePermission: [],
+                  deletePermission: [],
+                }
               });
 
               return {
@@ -52,6 +59,26 @@ export const getServerSideProps: GetServerSideProps<
               const data = await customDataProvider.deleteOne({
                 resource: parseResource(resource),
                 id
+              });
+
+              return {
+                props: {
+                  initialData: data,
+                  ...(await serverSideTranslations(context.locale ?? "en", ["common"])),
+                },
+              };
+              break;
+            }
+
+            case "list":{
+              const data = await customDataProvider.getList({
+                resource: parseResource(resource),
+                metaData: {
+                  writePermissions: [Permission.write(Role.users())],
+                  readPermissions: [Permission.read(Role.users())],
+                  updatePermission: [],
+                  deletePermission: [],
+                }
               });
 
               return {

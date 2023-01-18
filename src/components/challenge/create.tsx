@@ -4,27 +4,36 @@ import {
     Form,
     Select,
     Upload,
-    Input, RcFile,
+    Input, RcFile, notificationProvider,
 } from "@pankod/refine-antd";
 import {IChallengeCreate} from "src/interfaces";
-import {BUCKET_ID, encryptVault, hashData, mask, normalizeFile, resources, sec, storage} from "../../utility";
+import {
+    appwriteClient,
+    BUCKET_ID,
+    encryptVault,
+    hashData,
+    mask,
+    normalizeFile, options,
+    resources,
+    sec,
+    storage
+} from "../../utility";
 import {HttpError, IResourceComponentsProps, useGetIdentity, useNavigation} from "@pankod/refine-core";
-import {Permission, Role} from "appwrite";
+import {Databases, Permission, Role} from "appwrite";
 
 
 export const ChallengeCreate: React.FC<IResourceComponentsProps> = () => {
     const { goBack } = useNavigation();
     const {formProps, saveButtonProps} = useForm<IChallengeCreate,
         HttpError,
-        IChallengeCreate>({
+        IChallengeCreate>(
+            {
             action: "create",
             resource: resources.challenge,
             redirect: false,
-            onMutationSuccess: () => goBack(),
-            metaData: {
-                writePermissions: [],
-                readPermissions: [Permission.read(Role.users())],
-            }
+            onMutationSuccess: async (data) => {
+                goBack()
+            },
         },
 
 );
@@ -35,15 +44,32 @@ export const ChallengeCreate: React.FC<IResourceComponentsProps> = () => {
 
     return (
         <Create saveButtonProps={saveButtonProps}>
-            <Form {...formProps} layout="vertical" onFinish={(values) => {
-                formProps.onFinish?.({
-                    ...values,
-                    files: JSON.stringify(values.files),
-                    flag: "",
-                    author_id: identity
-                });
+            <Form {...formProps} layout="vertical" onFinish={async (values) => {
 
-                Write(values.name, identity, values.flag).then(r =>{console.log(r)})
+
+                // formProps.onFinish?.({
+                //     ...values,
+                //     files: JSON.stringify(values.files),
+                //     flag: "",
+                //     author_id: identity,
+                // });
+
+                await Write(values.name, identity, values.flag, values).then((success) => {
+                    if (success) {
+                        notificationProvider.open({
+                            message: "Challenge created",
+                            key: "challenge_create_success",
+                            type: "success"
+                        })
+                        goBack()
+                    } else {
+                        notificationProvider.open({
+                            message: "Failed to create challenge",
+                            key: "challenge_create_fail",
+                            type: "error"
+                        })
+                    }
+                })
             }}>
                 <Form.Item label="Name" name="name">
                     <Input/>
@@ -127,20 +153,24 @@ export const ChallengeCreate: React.FC<IResourceComponentsProps> = () => {
     );
 };
 
-export async function Write(name: string, id: string, flag: string){
+export async function Write(name: string, id: string, flag: string, values: IChallengeCreate){
     const req = await fetch('/api/vault/create',{
         method: "POST",
         body: JSON.stringify({
-          encFlag:hashData(flag),name,id:hashData(id)
+          encFlag:hashData(flag),name,id:hashData(id),values
         }),
         headers: {
             'Content-Type':'application/json'
         }
     })
     const res = await req.json()
-    if(res.success){
-        console.log("uspio sejvat")
-    }
+    console.log("res")
     console.log(res)
+    if(res.success){
+        return true
+
+    }else{
+        return false
+    }
 }
 export default ChallengeCreate;
