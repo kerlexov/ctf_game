@@ -22,10 +22,10 @@ name: rc-kv-ctf
 4. Create AppRole for Node.js Application
 
 docker exec -it vault /bin/sh
-export VAULT_ADDR=https://kbc-vault.cloud.karber.hr:8200
+export VAULT_ADDR=https://vault.cloud.artynex.com:8200
 export VAULT_ADDR=http://localhost:8200
 export VAULT_TOKEN=<ROOT TOKEN>
-
+export VAULT_TOKEN=s.RfsylY6bJKtOMEQadvPAWTUp
 vault write auth/approle/role/ctf-app-role \
 token_ttl=24h \
 token_max_ttl=24h \
@@ -33,12 +33,11 @@ token_policies=rc-kv-ctf
 
 Get role-id and secret-id
 
-role_id    47403516-81b1-72ab-2d9c-338104463d2b
+73ef6deb-859b-1d6d-828f-5e87b546613d
 vault read auth/approle/role/ctf-app-role/role-id
 
-secret_id             e0180ad1-8dba-2adf-10be-e3bff50366ec
 vault write -f auth/approle/role/ctf-app-role/secret-id
-
+6f549079-6519-8f25-fc0f-4692ac1ad1a7
 
 
 vault kv put secret/ctf/app db_name="users" username="admin" password="passw0rd"

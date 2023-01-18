@@ -13,11 +13,20 @@ module.exports = withPlugins([[pluginAntdLess]], {
     newNextLinkBehavior: true,
   },
   webpack5: true,
-  webpack: config => {
-    config.resolve.fallback = {
-      fs: false,
+  webpack: (config, {isServer}) => {
+    if (!isServer) {
+      config.resolve = {
+        ...config.resolve,
+        fallback: {
+          ...config.resolve.fallback,
+          fs: false,
+        },
+      };
+    }
+    config.module = {
+      ...config.module,
+      exprContextCritical: false,
     };
-
     return config;
   },
   async headers() {
@@ -27,8 +36,8 @@ module.exports = withPlugins([[pluginAntdLess]], {
         source: "/api/:path*",
         headers: [
           { key: "Access-Control-Allow-Credentials", value: "true" },
-          { key: "Access-Control-Allow-Origin", value: "kbc-vault.cloud.karber.hr,ctf-game.vercel.app" },
-          { key: "Access-Control-Allow-Methods", value: "GET,OPTIONS,PATCH,DELETE,POST,PUT" },
+          { key: "Access-Control-Allow-Origin", value: "ctf-game.vercel.app" },
+          { key: "Access-Control-Allow-Methods", value: "GET,OPTIONS,PATCH,DELETE,POST,PUT,LIST" },
           { key: "Access-Control-Allow-Headers", value: "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version" },
         ]
       }

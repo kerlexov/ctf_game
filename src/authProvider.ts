@@ -10,13 +10,18 @@ async function Register(data: IRegisterForm) {
   if(acc){
     return Promise.resolve()
   }
+  return Promise.reject()
 }
 async function Login(data: ILoginForm) {
   const acc = await account.createEmailSession(data.email, data.password)
   if(acc){
     account.createJWT().then(r => {
       if(r){
-        nookies.set(null, "cookey", JSON.stringify(r), {
+        nookies.set(null, "c", JSON.stringify(r.jwt), {
+          maxAge: 1 * 60 * 60,
+          path: "/",
+        });
+        nookies.set(null, "a", JSON.stringify(acc.userId), {
           maxAge: 1 * 60 * 60,
           path: "/",
         });
@@ -26,60 +31,56 @@ async function Login(data: ILoginForm) {
     return Promise.resolve()
   }
 }
-
-declare module 'jwt-decode' {
-  export interface JwtPayloadCustom extends JwtPayload {
-    userId: string
-    sessionId: string
-//        exp: number
-  }
-}
 export const authProvider: AuthProvider = {
   login: ({email, password}) => {
     return Login({email,password,remember:false})
   },
   register: ({create_email, create_password, create_name}) => {
-    //TODO fix register cannot call it async, it needs Promise as response currently throws error on success :D
     return Register({create_email, create_password, create_name})
   },
   logout: (ctx) => {
+    nookies.destroy(ctx, "a");
+    nookies.destroy(ctx, "c");
     const nes = account.deleteSession("current");
     nes.catch((err)=>{
       console.log(err)
       console.log("lgout AP error")
+      return Promise.reject()
     })
-    nookies.destroy(ctx, "auth");
-    nookies.destroy(ctx, "cookey");
 
     return Promise.resolve();
   },
   checkAuth: (ctx) => {
-    return nookies.get(ctx)["cookey"] ? Promise.resolve():Promise.reject();
+    const jwt = JSON.parse(nookies.get(ctx)["c"]);
+    const aid =JSON.parse(nookies.get(ctx)["a"]);
+    if(jwt&&aid) {
+      const decoded = jwt_decode<JwtPayloadCustom>(jwt);
+      if (decoded && decoded.userId && decoded.sessionId && decoded.exp > Date.now() / 1000 && decoded.userId == aid) {
+        return Promise.resolve(jwt)
+      }
+    }
+    nookies.destroy(ctx, "c");
+    nookies.destroy(ctx, "a");
+    return Promise.reject();
   },
   checkError: (error) => {
     if (error.statusCode === 401) {
       return Promise.reject("/login");
     }
+    console.log("checkError auth not 401")
+    console.log(error)
     return Promise.resolve();
   },
   getPermissions: () => {
-    const jwt = nookies.get()["cookey"];
-    if (jwt) {
-      const parsedJWT = JSON.parse(jwt);
-      const decoded = jwt_decode<JwtPayloadCustom>(parsedJWT.jwt);
-      if (decoded && decoded.userId){
-        return Promise.resolve(decoded.sessionId);
-      }
-    }
     return Promise.resolve();
   },
-  getUserIdentity: () => {
-    const jwt = nookies.get()["cookey"];
-    if (jwt) {
-      const parsedJWT = JSON.parse(jwt);
-      const decoded = jwt_decode<JwtPayloadCustom>(parsedJWT.jwt);
-      if (decoded && decoded.userId){
-        return Promise.resolve(decoded.userId);
+  getUserIdentity: (ctx) => {
+    const jwt = JSON.parse(nookies.get(ctx)["c"]);
+    const aid =JSON.parse(nookies.get(ctx)["a"]);
+    if(jwt&&aid) {
+      const decoded = jwt_decode<JwtPayloadCustom>(jwt);
+      if (decoded && decoded.userId && decoded.sessionId && decoded.exp > Date.now() / 1000 && decoded.userId == aid) {
+        return Promise.resolve(decoded.userId)
       }
     }
     return Promise.reject();

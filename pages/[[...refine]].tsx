@@ -92,7 +92,7 @@ export const getServerSideProps: GetServerSideProps<
   };
 };
 
-export default NextRouteComponent.bind({initialRoute:"/challenge"});
+export default NextRouteComponent.bind({initialRoute:"/"});
 
 
 /**

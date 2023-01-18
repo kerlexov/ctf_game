@@ -65,6 +65,7 @@ export const LoginScreen: React.FC = (context) => {
     if(isRegisterSuccess && registerDone){
         notificationProvider.open({message:"Register successful",key:"regis",type:"success"})
         setIsLogin(true)
+        setRegisterDone(false)
     }
     if(isLoginSuccess || isSuccess){
         notificationProvider.open({message:"Login successful",key:"logis",type:"success"})

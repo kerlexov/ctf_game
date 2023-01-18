@@ -1,3 +1,5 @@
+import {JwtPayload} from "jwt-decode";
+import VaultClient from "node-vault-client";
 export interface IChallengeBase {
     id: string;
     name: string;
@@ -39,7 +41,13 @@ export interface IRegisterForm {
     create_password: string;
 }
 
-
+export interface ResultRecordData{
+    name: string
+    points: number
+}
+export type ResultRecord = {
+    [key: string]: number;
+}
 
 export interface UploadFiles {
     uid:     string;
@@ -50,3 +58,16 @@ export interface UploadFiles {
     percent: number;
     status:  string;
 }
+
+declare module 'jwt-decode' {
+    export interface JwtPayloadCustom extends JwtPayload {
+        userId: string
+        sessionId: string
+        exp: number
+    }
+}
+
+export interface ScoreboardProps {
+    initialData?: ResultRecordData[]
+}
+

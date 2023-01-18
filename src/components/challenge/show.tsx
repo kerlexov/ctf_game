@@ -2,14 +2,14 @@ import {
     BaseRecord,
     GetOneResponse,
     IResourceComponentsProps,
-    parseTableParamsFromQuery,
+    parseTableParamsFromQuery, useGetIdentity,
     useOne,
     useShow
 } from "@pankod/refine-core";
-import {Show, Typography, Tag, Button, Card, Input, Col, Row} from "@pankod/refine-antd";
-import React from "react";
+import {Show, Typography, Tag, Button, Card, Input, Col, Row, notificationProvider} from "@pankod/refine-antd";
+import React, {useState} from "react";
 import {IChallenge, IFile, UploadFiles} from "../../interfaces";
-import {customDataProvider, resources} from "../../utility";
+import {customDataProvider, encryptVault, hashData, mask, resources} from "../../utility";
 import {GetServerSideProps} from "next";
 import {Convert} from "../../utility/convert";
 const { Title, Text } = Typography;
@@ -25,6 +25,9 @@ export const ChallengeShow: React.FC<
 //     const { data, isLoading } = queryResult;
     const record = initialData?.data
 
+    const [answer, setAnswer] = useState("")
+    const {data: identity} = useGetIdentity();
+
     function RenderFiles(raw: any) {
         const uploadFiles = Convert.toUploadFiles(raw);
         //console.table(result)
@@ -34,6 +37,7 @@ export const ChallengeShow: React.FC<
                 <button style={{margin:"2em"}}>Dowload file <Tag>{v.name}</Tag></button>
             </a></>}
         )
+
     }
 
     return (
@@ -77,10 +81,28 @@ export const ChallengeShow: React.FC<
 
 
             <Card style={{marginTop:"2em"}}>
-                <Input placeholder="Flag(THIS_IS_FLAG)" name="inputFlag">
+                <Input placeholder="Flag(THIS_IS_FLAG)" name="inputFlag"
+                   value={answer} onChange={(v)=>{
+                       setAnswer(v.target.value)
+                    }
+                }>
 
                 </Input>
-                <Button style={{marginTop:"2em"}}>
+                <Button style={{marginTop:"2em"}} onClick={()=>{
+                    console.log(record)
+                    console.log(answer)
+                    VerifyAnswer(record?.name!, record?.author_id!, answer, identity,record?.points!,record?.id!)
+                        .then((r) =>{
+                            if(r){
+                                notificationProvider.open({message:"Congrats, challenge solved",key:"challenge_success",type:"success"})
+                            }else {
+                                notificationProvider.open({message:"Wrong answer, try again",key:"challenge_fail",type:"error"})
+                            }
+                        })
+                        .catch((e)=>{
+                            console.log(e)
+                        })
+                }}>
                     SOLVE
                 </Button>
 
@@ -88,6 +110,24 @@ export const ChallengeShow: React.FC<
         </Show>
     );
 };
+
+export async function VerifyAnswer(name: string, author: string, flag: string, identity: string, points: number, cid: string){
+    const encFlag = hashData(flag)
+    const resp = await fetch('/api/vault/verify',{
+        method: "POST",
+        body: JSON.stringify({
+            name,author,encFlag, identity, points,cid
+        }),
+        headers: {
+            'Content-Type':'application/json'
+        }
+    })
+    const datarsp = await resp.json()
+
+    return datarsp.correct
+    //console.log(datarsp)
+}
+export default ChallengeShow;
 
 // export const getServerSideProps: GetServerSideProps = async (context) => {
 //     const { parsedCurrent, parsedPageSize, parsedSorter, parsedFilters } =

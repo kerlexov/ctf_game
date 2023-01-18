@@ -7,6 +7,10 @@ export function hashData(data: string) {
     return SHA256(data).toString();
 }
 
+export function mask(name:string, identity: string) {
+    return hashData(`${name}_${sec}_${identity}`)
+}
+
 export function generateVaultKey({  name,  hashedData, salt }: {
     name: string;
     hashedData: string;

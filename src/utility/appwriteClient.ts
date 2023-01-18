@@ -1,21 +1,16 @@
-import {Account, Appwrite, dataProvider, Storage} from "@pankod/refine-appwrite";
+import {dataProvider} from "@pankod/refine-appwrite";
+import { Client, Account, Storage } from "appwrite";
 
-const APPWRITE_URL = "https://kbc.cloud.karber.hr/v1";
-const APPWRITE_PROJECT = "637e412ccb434aa524ad";
-const DATABASE_ID = "63802129cb88edc7526f";
-const RESOURCE_CHALLENGE = "6380213352b807797847";
-const BUCKET_ID = "6388f55adfd672515271";
+import * as process from "process";
+const BUCKET_ID = process.env.NEXT_PUBLIC_BUCKET_ID;
+const appwriteClient = new Client();
 
-const appwriteClient = new Appwrite();
-
-appwriteClient.setEndpoint(APPWRITE_URL).setProject(APPWRITE_PROJECT);
+appwriteClient.setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_URL).setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT);
 const account = new Account(appwriteClient);
 const storage = new Storage(appwriteClient);
-const options = { databaseId: DATABASE_ID }
-
-const customDataProvider = dataProvider(appwriteClient, {
-    databaseId: DATABASE_ID,
-});
+const options = { databaseId: process.env.NEXT_PUBLIC_DATABASE_ID }
+const customDataProvider = dataProvider(appwriteClient, options);
+const resources = {  challenge: process.env.NEXT_PUBLIC_RESOURCE_CHALLENGES}
 
 export function parseResource(resource: string) {
     switch (resource){
@@ -28,7 +23,5 @@ export function parseResource(resource: string) {
     }
     return "";
 }
-
-const resources = {  challenge: RESOURCE_CHALLENGE}
 
 export { appwriteClient, account, storage, options, resources,customDataProvider,BUCKET_ID };
