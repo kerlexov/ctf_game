@@ -28,7 +28,7 @@ export const HomeScreen: React.FC<ScoreboardProps> = (props, context) => {
     useEffect(()=>{
 
         if(!loaded){
-         fetch('https://ctf-game.vercel.app/api/scoreboard', {
+         fetch('/api/scoreboard', {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json'
@@ -79,7 +79,7 @@ export const getServerSideProps:  GetServerSideProps<ScoreboardProps> = async (c
             return props;
         }
 
-        const resp = await fetch('https://ctf-game.vercel.app/api/scoreboard', {
+        const resp = await fetch('/api/scoreboard', {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json'

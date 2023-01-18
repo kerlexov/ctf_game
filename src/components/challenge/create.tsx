@@ -54,8 +54,8 @@ export const ChallengeCreate: React.FC<IResourceComponentsProps> = () => {
                 //     author_id: identity,
                 // });
 
-                await Write(values.name, identity, values.flag, values).then((success) => {
-                    if (success) {
+                const writeRes = await Write(values.name, identity, values.flag, values)
+                    if (writeRes) {
                         notificationProvider.open({
                             message: "Challenge created",
                             key: "challenge_create_success",
@@ -69,7 +69,7 @@ export const ChallengeCreate: React.FC<IResourceComponentsProps> = () => {
                             type: "error"
                         })
                     }
-                })
+
             }}>
                 <Form.Item label="Name" name="name">
                     <Input/>
@@ -154,26 +154,28 @@ export const ChallengeCreate: React.FC<IResourceComponentsProps> = () => {
 };
 
 export async function Write(name: string, id: string, flag: string, values: IChallengeCreate){
-    const req = await fetch('https://ctf-game.vercel.app/api/vault/create',{
+    const [isWritten] = await Promise.all([fetch('/api/vault/create', {
         method: "POST",
         body: JSON.stringify({
-          encFlag:hashData(flag),name,id:hashData(id),values
+            encFlag: hashData(flag), name, id: hashData(id), values
         }),
         headers: {
-            'Content-Type':'application/json'
+            'Content-Type': 'application/json'
         }
-    })
-    console.log(req)
-    const res = await req.json().catch((e)=>{
-        console.log(e)
-        return false
-    })
+    }).then(async (req) => {
+        console.log(req)
+       return await req.json().then((res) => {
+            if (res.success) {
+                return true
+            } else {
+                return false
+            }
+        }).catch((e) => {
+            console.log(e)
+            return false
+        })
+    })])
 
-    if(res.success){
-        return true
-
-    }else{
-        return false
-    }
+    return isWritten
 }
 export default ChallengeCreate;
