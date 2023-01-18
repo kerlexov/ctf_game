@@ -60,7 +60,6 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
             list: ChallengeList,
             create: ChallengeCreate,
             show: ChallengeShow,
-            //edit: ChallengeEdit,
             options: {
               label: "Challenge",
             },

@@ -8,18 +8,14 @@ import {
 } from "@pankod/refine-antd";
 import {IChallengeCreate} from "src/interfaces";
 import {
-    appwriteClient,
     BUCKET_ID,
-    encryptVault,
     hashData,
-    mask,
-    normalizeFile, options,
+    normalizeFile,
     resources,
-    sec,
     storage
 } from "../../utility";
 import {HttpError, IResourceComponentsProps, useGetIdentity, useNavigation} from "@pankod/refine-core";
-import {Databases, Permission, Role} from "appwrite";
+import {Permission, Role} from "appwrite";
 
 
 export const ChallengeCreate: React.FC<IResourceComponentsProps> = () => {
@@ -31,29 +27,13 @@ export const ChallengeCreate: React.FC<IResourceComponentsProps> = () => {
             action: "create",
             resource: resources.challenge,
             redirect: false,
-            onMutationSuccess: async (data) => {
-                goBack()
-            },
-        },
-
-);
-    // const { selectProps: categorySelectProps } = useSelect<IChallengeCreate>({
-    //     resource: "categories",
-    // });
+            onMutationSuccess:  () => goBack(),
+        });
     const {data: identity} = useGetIdentity();
 
     return (
         <Create saveButtonProps={saveButtonProps}>
             <Form {...formProps} layout="vertical" onFinish={async (values) => {
-
-
-                // formProps.onFinish?.({
-                //     ...values,
-                //     files: JSON.stringify(values.files),
-                //     flag: "",
-                //     author_id: identity,
-                // });
-
                 const writeRes = await Write(values.name, identity, values.flag, values)
                     if (writeRes) {
                         notificationProvider.open({
@@ -68,8 +48,8 @@ export const ChallengeCreate: React.FC<IResourceComponentsProps> = () => {
                             key: "challenge_create_fail",
                             type: "error"
                         })
+                        goBack()
                     }
-
             }}>
                 <Form.Item label="Name" name="name">
                     <Input/>
@@ -124,6 +104,7 @@ export const ChallengeCreate: React.FC<IResourceComponentsProps> = () => {
                                         BUCKET_ID,
                                         rcFile.uid,
                                         rcFile,
+                                        [ Permission.read(Role.any()), Permission.write(Role.team("admin", "admin"))]
                                     );
 
                                     const url = storage.getFileView(
@@ -142,12 +123,6 @@ export const ChallengeCreate: React.FC<IResourceComponentsProps> = () => {
                         </Upload.Dragger>
                     </Form.Item>
                 </Form.Item>
-                {/*<Form.Item label="Category" name="challangeCategoryID">*/}
-                {/*    <Input />*/}
-                {/*</Form.Item>*/}
-                {/*<Form.Item label="Category" name={["category", "id"]}>*/}
-                {/*    <Select {...categorySelectProps} />*/}
-                {/*</Form.Item>*/}
             </Form>
         </Create>
     );
@@ -163,7 +138,6 @@ export async function Write(name: string, id: string, flag: string, values: ICha
             'Content-Type': 'application/json'
         }
     }).then(async (req) => {
-        console.log(req)
        return await req.json().then((res) => {
             if (res.success) {
                 return true

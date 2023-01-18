@@ -17,9 +17,7 @@ export const ChallengeShow: React.FC<
     IResourceComponentsProps<GetOneResponse<IChallenge>>
     > = ({ initialData }) => {
 
-    console.log(initialData)
     const record = initialData?.data
-
     const [answer, setAnswer] = useState("")
     const {data: identity} = useGetIdentity();
 
@@ -30,11 +28,10 @@ export const ChallengeShow: React.FC<
                 <button style={{margin:"2em"}}>Dowload file <Tag>{v.name}</Tag></button>
             </a></>}
         )
-
     }
 
     return (
-        <Show>
+        <Show title={record.name} headerButtons={({ defaultButtons }) => (<>{}</>)}>
             <Card>
                 <Row justify="start">
                     <Col span={4}>

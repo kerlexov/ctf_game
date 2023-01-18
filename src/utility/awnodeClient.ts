@@ -7,6 +7,6 @@ client
     .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT)
     .setKey(process.env.AWSID);
 const users = new sdk.Users(client);
-
+const teams = new sdk.Teams(client);
 const database = new sdk.Databases(client)
-export {users, database, client}
+export {users, database, client, teams}

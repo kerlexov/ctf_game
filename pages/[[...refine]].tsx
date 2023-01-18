@@ -26,7 +26,6 @@ export const getServerSideProps: GetServerSideProps<
   // customize
   try {
     if(id) {
-      console.log(resource,action,id)
       switch (resource) {
         case "challenge": {
           switch (action) {

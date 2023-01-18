@@ -1,5 +1,5 @@
 import React, {useEffect, useMemo, useState} from "react";
-import {AntdLayout, Button, Row, Spin} from "@pankod/refine-antd";
+import {AntdLayout, Row, Spin} from "@pankod/refine-antd";
 import {ResultRecordData, ScoreboardProps} from "../../interfaces";
 import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
 import {GetServerSideProps} from "next";
@@ -9,7 +9,6 @@ import {LoadingOutlined} from "@ant-design/icons";
 
 export const HomeScreen: React.FC<ScoreboardProps> = (props, context) => {
     const antIcon = <LoadingOutlined style={{ fontSize: 64,color: "purple" }} spin />;
-
     const columns = useMemo<MRT_ColumnDef<ResultRecordData>[]>(
         () => [
             {
@@ -28,20 +27,22 @@ export const HomeScreen: React.FC<ScoreboardProps> = (props, context) => {
     const [loaded, setLoaded] = useState(false);
 
     useEffect(()=>{
-
         if(!loaded){
-         fetch('/api/scoreboard', {
-            method: "GET",
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then((resp)=>{
-            resp.json().then((fin)=>{
-                setData(fin.data)
-                setLoaded(true)
-            })
-
-         })
+                fetch('/api/scoreboard', {
+                    method: "GET",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then((resp) => {
+                    resp.json().then((fin) => {
+                        setData(fin.data)
+                        setLoaded(true)
+                    })
+                }).catch((e)=>{
+                    console.log(e)
+                    setData([])
+                    setLoaded(true)
+                })
         }
     }, [data,loaded])
 
@@ -54,7 +55,6 @@ export const HomeScreen: React.FC<ScoreboardProps> = (props, context) => {
                     height: "100vh",
                 }}
             >
-
                 {data&&loaded?(<MaterialReactTable
                     columns={columns}
                     data={data}
@@ -66,7 +66,6 @@ export const HomeScreen: React.FC<ScoreboardProps> = (props, context) => {
                     enableTopToolbar={false}
                     muiTableBodyRowProps={{ hover: false }}
                 />):(<><Spin indicator={antIcon} /></>)}
-
             </Row>
         </AntdLayout>
     );

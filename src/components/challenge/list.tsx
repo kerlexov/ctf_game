@@ -3,7 +3,7 @@ import {
     GetListResponse,
     IResourceComponentsProps,
     LayoutWrapper,
-    parseTableParamsFromQuery
+    parseTableParamsFromQuery, usePermissions
 } from "@pankod/refine-core";
 import {useTable, List, Table, Space, EditButton, ShowButton, DeleteButton, Button} from "@pankod/refine-antd";
 import {appwriteClient, customDataProvider, options, resources} from "../../utility";
@@ -23,41 +23,12 @@ export const ChallengeList: React.FC<
         queryOptions: {
             initialData,
         },
-        metaData: {
-            writePermissions: [Permission.write(Role.users())],
-            readPermissions: [Permission.read(Role.users())],
-            updatePermission: [],
-            deletePermission: [],
-            // Permission.read(Role.any()),                  // Anyone can view this document
-            // Permission.update(Role.team("writers")),      // Writers can update this document
-            // Permission.update(Role.team("admin")),       // Admins can update this document
-            // Permission.delete(Role.user("5c1f88b42259e"))
-        }
     });
 
+    const { data: permissionsData } = usePermissions();
+
     return (
-            <List title="Challenges" headerButtons={({ defaultButtons }) => (
-                <>
-                    {defaultButtons}
-                    <Button type="primary" title="delete"
-                            onClick={async () => {
-                                const data = await customDataProvider.getList({
-                                    resource: resources.challenge,
-                                });
-                                let ids: BaseKey[] = [];
-                                data.data.forEach((value, index, array)=>{
-                                    ids.push(value.id as BaseKey)
-                                })
-
-                                console.log(ids);
-                                const res = await customDataProvider.deleteMany({resource: resources.challenge, ids})
-                                console.log("briso")
-                                console.log(res.data)
-                            }}
-                    >Delete all</Button>                </>
-            )}
-
-            >
+            <List title="Challenges" canCreate={permissionsData?.includes("admin")} headerButtons={({ defaultButtons }) => (<>{defaultButtons}</>)}>
                 <Table {...tableProps} rowKey="id">
                     <Table.Column dataIndex="name" title="Name" />
                     <Table.Column dataIndex="points" title="Points" />
@@ -73,16 +44,15 @@ export const ChallengeList: React.FC<
                                         size="small"
                                         recordItemId={record.id}
                                     />
-                                    <EditButton
-                                        size="small"
-                                        recordItemId={record.id}
-                                    />
-                                    <DeleteButton
-                                        size="small"
-                                        resourceNameOrRouteName={resources.challenge}
-                                        recordItemId={record.id}
-                                        mutationMode="undoable"
-                                    />
+                                    {
+                                        permissionsData?.includes("admin")?(<DeleteButton
+                                            size="small"
+                                            resourceNameOrRouteName={resources.challenge}
+                                            recordItemId={record.id}
+                                            mutationMode="undoable"
+                                        />):(<></>)
+                                    }
+
                                 </Space>
                             );
                         }}

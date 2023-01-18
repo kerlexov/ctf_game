@@ -51,15 +51,16 @@ export const Header: React.FC = () => {
         backgroundColor: "#FFF",
       }}
     >
-      <Dropdown overlay={menu}>
-        <Button type="link">
-          <Space>
-            <Avatar size={16} src={`/images/flags/${currentLocale}.svg`} />
-            {currentLocale === "en" ? "English" : "German"}
-            <DownOutlined />
-          </Space>
-        </Button>
-      </Dropdown>
+      {/*<Dropdown overlay={menu}>*/}
+      {/*  <Button type="link">*/}
+      {/*    <Space>*/}
+      {/*      <Avatar size={16} src={`/images/flags/${currentLocale}.svg`} />*/}
+      {/*      {currentLocale === "en" ? "English" : "German"}*/}
+      {/*      <DownOutlined />*/}
+      {/*    </Space>*/}
+      {/*  </Button>*/}
+      {/*</Dropdown>*/}
+
     </AntdLayout.Header>
   );
 };
