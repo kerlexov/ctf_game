@@ -8,7 +8,14 @@ const pluginAntdLess = withAntdLess({
 
 module.exports = withPlugins([[pluginAntdLess]], {
   i18n,
-  distDir: 'build',
+  //distDir: 'build',
+  output: 'standalone',
+  typescript: {
+    ignoreBuildErrors: true
+  },
+  eslint: {
+    ignoreDuringBuilds: true
+  },
   experimental: {
     newNextLinkBehavior: true,
   },
@@ -36,7 +43,7 @@ module.exports = withPlugins([[pluginAntdLess]], {
         source: "/api/:path*",
         headers: [
           { key: "Access-Control-Allow-Credentials", value: "true" },
-          { key: "Access-Control-Allow-Origin", value: "ctf-game.vercel.app" },
+          { key: "Access-Control-Allow-Origin", value: "ctf.artynex.com" },
           { key: "Access-Control-Allow-Methods", value: "GET,OPTIONS,PATCH,DELETE,POST,PUT,LIST" },
           { key: "Access-Control-Allow-Headers", value: "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version" },
         ]

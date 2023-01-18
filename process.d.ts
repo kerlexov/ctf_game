@@ -8,16 +8,9 @@ namespace NodeJS {
         NEXT_PUBLIC_RESOURCE_CATEGORIES: string
         NEXT_PUBLIC_BUCKET_ID: string
 
-        APPWRITE_URL: string
-        APPWRITE_PROJECT: string
-        DATABASE_ID: string
-        RESOURCE_CHALLENGES: string
-        RESOURCE_CATEGORIES: string
-        BUCKET_ID: string
         VSID: string
         VRID: string
         VURL: string
         AWSID: string
-        HOKI: string
     }
 }
