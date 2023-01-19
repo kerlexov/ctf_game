@@ -125,7 +125,16 @@ export async function Write(name: string, id: string, flag: string, values: ICha
     const [isWritten] = await Promise.all([fetch('/api/vault/create', {
         method: "POST",
         body: JSON.stringify({
-            encFlag: hashData(flag), name, id: hashData(id), values
+            encFlag: hashData(flag), name, id: hashData(id), values:{
+                id: values.id,
+                name: values.name,
+                points: values.points,
+                difficulty: values.difficulty,
+                description: values.description,
+                author_id: values.author_id,
+                flag: "",
+                files: values.files
+            }
         }),
         headers: {
             'Content-Type': 'application/json'
