@@ -36,26 +36,37 @@ export const ResetPage: React.FC = (props, context) => {
             >
                 <Form style={{marginTop:"3em",width: "80%"}}>
                     <Title style={{color:"white"}} level={5}>Password change</Title>
-                    <Input minLength={8} maxLength={128} required type={"password"}  onChange={(c)=>{
+                    <Input minLength={8} maxLength={128} required type={"password"} value={changeValue} onChange={(c)=>{
                         setChangeValue(c.target.value)
                     }} placeholder="********" />
 
                     <Button style={{marginTop:"2em"}} onClick={async (c) => {
                         if (changeValue.length > 8) {
-                            const promise = await account.updateRecovery(u, s, hashData(changeValue), hashData(changeValue))
-                            if(promise){
+
+                            const resp = await fetch('/api/vault/verify',{
+                                method: "POST",
+                                body: JSON.stringify({
+                                    u,s,p:hashData(changeValue)
+                                }),
+                                headers: {
+                                    'Content-Type':'application/json'
+                                }
+                            })
+                            const datarsp = await resp.json()
+                            if(datarsp.success){
                                 notificationProvider.open({
                                     message: "Password changed",
                                     key: "pchageea",
-                                    type: "error"
+                                    type: "success"
                                 })
-                            }else {
+                            }else{
                                 notificationProvider.open({
                                     message: "Failed to change password",
                                     key: "pchageeas",
                                     type: "error"
                                 })
                             }
+
                             setChangeValue("")
                         } else {
                             notificationProvider.open({
@@ -63,6 +74,7 @@ export const ResetPage: React.FC = (props, context) => {
                                 key: "pchageea",
                                 type: "error"
                             })
+                            setChangeValue("")
                         }
                     }
                     } type={"primary"}>Change password</Button>
