@@ -1,5 +1,5 @@
 import {hashData} from "../../../../src/utility";
-import vaultClient from "../../../../src/utility/vaultClient";
+import {vaultClient} from "../../../../src/utility/vaultClient";
 
 const handler = async (req: any, res: any) => {
     if (req.method === 'POST') {

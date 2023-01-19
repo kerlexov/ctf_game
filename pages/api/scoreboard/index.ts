@@ -1,4 +1,4 @@
-import vaultClient from "../../../src/utility/vaultClient";
+import {vaultClient} from "../../../src/utility/vaultClient";
 import {ResultRecord, ResultRecordData} from "../../../src/interfaces";
 import {hashData, users} from "../../../src/utility";
 
