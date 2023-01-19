@@ -19,7 +19,9 @@ export const ChallengeCreate: React.FC<IResourceComponentsProps> = () => {
     const {data: identity} = useGetIdentity();
     const {data: permissionsData} = usePermissions();
     if(!permissionsData?.includes("admin")){
-        goBack()
+        return (<>
+            Should you be here?
+        </>)
     }
 
     return (
