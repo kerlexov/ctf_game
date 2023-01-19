@@ -153,10 +153,10 @@ export const LoginScreen: React.FC = () => {
                     <Modal onOk={close} okButtonProps={{hidden: true}}
                            cancelButtonProps={{hidden: true}} {...modalProps}>
                         <Form style={{marginTop: "3em", width: "80%"}}>
-                            <Title style={{color: "black"}} level={5}>Password recovery</Title>
+                            <Title style={{color: "black"}} level={5}>Email password recovery</Title>
                             <Input required type={"email"} onChange={(c) => {
                                 setForgotEmail(c.target.value)
-                            }} placeholder="********"/>
+                            }} placeholder="Email"/>
 
                             <Button style={{marginTop: "2em"}} onClick={() => {
                                 if (emailExpression.test(forgotEmail)) {
@@ -172,7 +172,7 @@ export const LoginScreen: React.FC = () => {
                                     setForgotEmail("")
                                 }
                             }
-                            } type={"primary"}>Change password</Button>
+                            } type={"primary"}>Request password change</Button>
                         </Form>
                     </Modal>
                     <Button

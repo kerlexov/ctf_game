@@ -21,8 +21,8 @@ export const ChallengeList: React.FC<
               headerButtons={({defaultButtons}) => (<>{defaultButtons}</>)}>
             <Table {...tableProps} rowKey="id">
                 <Table.Column dataIndex="name" title="Name"/>
-                <Table.Column dataIndex="points" title="Points"/>
                 <Table.Column dataIndex="description" title="Description"/>
+                <Table.Column dataIndex="points" title="Points"/>
                 <Table.Column dataIndex="difficulty" title="Difficulty"/>
                 <Table.Column<IChallenge>
                     title="Actions"

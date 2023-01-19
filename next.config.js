@@ -9,6 +9,53 @@ const pluginAntdLess = withAntdLess({
     lessVarsFilePath: "./src/styles/variables.less",
 });
 
+const ContentSecurityPolicy = `
+  default-src 'self';
+  script-src 'self';
+  child-src ctf-game.vercel.app;
+  style-src 'self' ctf-game.vercel.app;
+  font-src 'self';  
+`
+
+const securityHeaders = [
+    {key: "Access-Control-Allow-Credentials", value: "true"},
+    {key: "Access-Control-Allow-Origin", value: "ctf-game.vercel.app"},
+    {key: "Access-Control-Allow-Methods", value: "GET,OPTIONS,PATCH,DELETE,POST,PUT,LIST"},
+    {
+        key: "Access-Control-Allow-Headers",
+        value: "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
+    },
+    {
+        key: 'X-DNS-Prefetch-Control',
+        value: 'on'
+    },
+    {
+        key: 'Strict-Transport-Security',
+        value: 'max-age=63072000; includeSubDomains; preload'
+    },
+    {
+        key: 'X-XSS-Protection',
+        value: '1; mode=block'
+    },
+    {
+        key: 'X-Frame-Options',
+        value: 'SAMEORIGIN'
+    },
+    {
+        key: 'X-Content-Type-Options',
+        value: 'nosniff'
+    },
+    {
+        key: 'Referrer-Policy',
+        value: 'strict-origin'
+    },
+    {
+        key: 'Content-Security-Policy',
+        value: ContentSecurityPolicy.replace(/\s{2,}/g, ' ').trim()
+    }
+]
+
+
 module.exports = withPlugins([[pluginAntdLess]], {
     i18n,
     distDir: 'build',
@@ -44,15 +91,7 @@ module.exports = withPlugins([[pluginAntdLess]], {
             {
                 // matching all API routes
                 source: "/api/:path*",
-                headers: [
-                    {key: "Access-Control-Allow-Credentials", value: "true"},
-                    {key: "Access-Control-Allow-Origin", value: "ctf-game.vercel.app"},
-                    {key: "Access-Control-Allow-Methods", value: "GET,OPTIONS,PATCH,DELETE,POST,PUT,LIST"},
-                    {
-                        key: "Access-Control-Allow-Headers",
-                        value: "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
-                    },
-                ]
+                headers: securityHeaders
             }
         ]
     }
