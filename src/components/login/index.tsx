@@ -34,7 +34,7 @@ const titleStyles: CSSProperties = {
 type forgotPasswordVariables = {
     email: string;
 };
-export const LoginScreen: React.FC = (props, context) => {
+export const LoginScreen: React.FC = () => {
     const CreateAcc = (
         <Title level={3} style={titleStyles}>
             Create account
@@ -158,7 +158,7 @@ export const LoginScreen: React.FC = (props, context) => {
                                 setForgotEmail(c.target.value)
                             }} placeholder="********"/>
 
-                            <Button style={{marginTop: "2em"}} onClick={(c) => {
+                            <Button style={{marginTop: "2em"}} onClick={() => {
                                 if (emailExpression.test(forgotEmail)) {
                                     forgotPassword({email: forgotEmail})
                                     setForgotEmail("")

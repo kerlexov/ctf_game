@@ -1,5 +1,6 @@
 import * as process from "process";
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const VaultClient = require("node-vault-client");
 export const vaultClient = new VaultClient({
     api: {url: process.env.VURL},

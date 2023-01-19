@@ -86,7 +86,7 @@ export const ChallengeCreate: React.FC<IResourceComponentsProps> = () => {
                                                       onSuccess,
                                                   }) => {
                                 try {
-                                    let rcFile = file as RcFile;
+                                    const rcFile = file as RcFile;
                                     const {$id} = await storage.createFile(
                                         BUCKET_ID,
                                         rcFile.uid,

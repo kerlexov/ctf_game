@@ -5,7 +5,7 @@ export const checkAuthentications = async (
     authProvider: AuthProvider,
     context: GetServerSidePropsContext,
 ): Promise<
-    GetServerSidePropsResult<{}> & {
+    GetServerSidePropsResult<any> & {
     isAuthenticated: boolean;
 }
 > => {

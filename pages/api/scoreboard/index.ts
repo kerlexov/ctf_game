@@ -29,7 +29,7 @@ const handler = async (req: any, res: any) => {
                     }
                 }));
 
-                let final: ResultRecordData[] = []
+                const final: ResultRecordData[] = []
                 const useri = await users.list()
                 useri.users.map((u: any) => {
                     if (resultRecord[hashData(u.$id)]) {

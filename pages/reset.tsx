@@ -2,13 +2,7 @@ import React, {useState} from "react";
 import {Button, Card, Col, Form, Input, notificationProvider, Row, Typography} from "@pankod/refine-antd";
 import {useRouter} from "next/router";
 import {hashData} from "../src/utility";
-
-
 const {Title} = Typography;
-type updatePasswordVariables = {
-    userId: string;
-    password: string;
-};
 export const ResetPage: React.FC = (props, context) => {
     const router = useRouter()
     const url1 = new URL(`https://ctf-game.vercel.app${router.query.to}`);

@@ -6,8 +6,6 @@ import {ILoginForm, IRegisterForm} from "./interfaces";
 import jwt_decode, {JwtPayloadCustom} from 'jwt-decode';
 import {notificationProvider} from "@pankod/refine-antd";
 
-2
-
 async function Register(data: IRegisterForm) {
     const acc = await account.create(ID.unique(), data.create_email, data.create_password, data.create_name)
     if (acc) {

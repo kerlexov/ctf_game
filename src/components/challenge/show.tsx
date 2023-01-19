@@ -26,7 +26,7 @@ export const ChallengeShow: React.FC<
     }
 
     return (
-        <Show title={record.name} headerButtons={({defaultButtons}) => (<>{}</>)}>
+        <Show title={record.name} headerButtons={() => (<>{}</>)}>
             <Card>
                 <Row justify="start">
                     <Col span={4}>
@@ -66,7 +66,7 @@ export const ChallengeShow: React.FC<
                 </Input>
                 <Button style={{marginTop: "2em"}} onClick={() => {
                     if (record?.name && record.author_id && answer && identity && record.points && record.id) {
-                        VerifyAnswer(record?.name!, record?.author_id!, answer, identity, record?.points!, record?.id!)
+                        VerifyAnswer(record.name!, record.author_id!, answer, identity, record.points!, record.id!)
                             .then((r) => {
                                 if (r) {
                                     notificationProvider.open({
