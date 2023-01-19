@@ -43,7 +43,7 @@ export const ResetPage: React.FC = (props, context) => {
                     <Button style={{marginTop:"2em"}} onClick={async (c) => {
                         if (changeValue.length > 8) {
 
-                            const resp = await fetch('/api/vault/validateForgot',{
+                            const resp = await fetch('/api/user/validateForgot',{
                                 method: "POST",
                                 body: JSON.stringify({
                                     u,s,p:hashData(changeValue)
