@@ -2,29 +2,11 @@ import React from "react";
 import { Link } from "@pankod/refine-nextjs-router";
 
 import { TitleProps } from "@pankod/refine-core";
+import {Typography} from "@pankod/refine-antd";
+const {Text} = Typography;
 
 export const Title: React.FC<TitleProps> = ({ collapsed }) => (
   <Link href="/">
-    {collapsed ? (
-      <img
-        src={"/refine-collapsed.svg"}
-        alt="Refine"
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          padding: "12px 24px",
-        }}
-      />
-    ) : (
-      <img
-        src={"/refine.svg"}
-        alt="Refine"
-        style={{
-          width: "200px",
-          padding: "12px 24px",
-        }}
-      />
-    )}
+    {collapsed ? (<center><Text style={{fontSize: 30,color:"#fff",fontWeight:"bold"}}>CTF</Text></center>) : (<center><Text style={{color:"#fff",fontSize: 42,fontWeight:"bold"}}>CTF</Text></center>) }
   </Link>
 );

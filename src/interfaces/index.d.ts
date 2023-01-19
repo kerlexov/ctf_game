@@ -71,3 +71,28 @@ export interface ScoreboardProps {
     initialData?: ResultRecordData[]
 }
 
+
+export interface ProfileProps {
+    name?: string
+    email?: string
+    emailVerified?: boolean
+    identity?: string
+    prefs?: ProfilePrefs;
+}
+
+export interface ProfilePrefs {
+    [key: string]: string
+}
+
+export type RefineLayoutSiderPropsCustom = {
+    render?: (props: SiderRenderPropsCustom) => React.ReactNode;
+};
+export type SiderRenderPropsCustom = {
+    items: JSX.Element[];
+    profile: React.ReactNode;
+    logout: React.ReactNode;
+    dashboard: React.ReactNode;
+    collapsed: boolean;
+};
+
+

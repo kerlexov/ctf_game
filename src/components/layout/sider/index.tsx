@@ -21,10 +21,11 @@ import {
 import { Title as DefaultTitle } from "../title";
 
 import { antLayoutSider, antLayoutSiderMobile } from "./styles";
+import {RefineLayoutSiderPropsCustom} from "../../../interfaces";
 const { UnorderedListOutlined, LogoutOutlined } = Icons;
 const { SubMenu } = Menu;
 
-export const Sider: typeof DefaultSider = ({ render }) => {
+export const Sider:React.FC<RefineLayoutSiderPropsCustom> = ({ render }) => {
   const [collapsed, setCollapsed] = useState<boolean>(false);
   const isExistAuthentication = useIsExistAuthentication();
   const { Link } = useRouterContext();
@@ -91,6 +92,17 @@ export const Sider: typeof DefaultSider = ({ render }) => {
       );
     });
   };
+  const profile = isExistAuthentication && (
+      <Menu.Item
+          key="profile"
+          style={{
+            fontWeight: selectedKey === "/profile" ? "bold" : "normal",
+          }}
+          icon={<Icons.UserOutlined />}
+      >
+        <Link href="/profile">{translate("profile.title", "Profile")}</Link>
+      </Menu.Item>
+  );
   const logout = isExistAuthentication && (
     <Menu.Item
       key="logout"
@@ -124,6 +136,7 @@ export const Sider: typeof DefaultSider = ({ render }) => {
         dashboard,
         items,
         logout,
+        profile,
         collapsed,
       });
     }
@@ -131,6 +144,7 @@ export const Sider: typeof DefaultSider = ({ render }) => {
       <>
         {dashboard}
         {items}
+        {profile}
         {logout}
       </>
     );

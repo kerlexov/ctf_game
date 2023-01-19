@@ -107,7 +107,6 @@ export async function VerifyAnswer(name: string, author: string, flag: string, i
     })
     const datarsp = await resp.json()
     return datarsp.correct
-    //console.log(datarsp)
 }
 export default ChallengeShow;
 

@@ -1,7 +1,7 @@
 import { GetServerSideProps } from "next";
 import {
-  handleRefineParams,
   checkAuthentication,
+  handleRefineParams,
   NextRouteComponent
 } from "@pankod/refine-nextjs-router";
 

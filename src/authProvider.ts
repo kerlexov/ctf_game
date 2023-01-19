@@ -5,6 +5,7 @@ import {ID} from "appwrite";
 import {ILoginForm, IRegisterForm} from "./interfaces";
 import jwt_decode, {JwtPayload, JwtPayloadCustom} from 'jwt-decode';
 import {teams, users} from "./utility/awnodeClient";
+import {notificationProvider} from "@pankod/refine-antd";
 
 2
 
@@ -109,5 +110,50 @@ export const authProvider: AuthProvider = {
             }
         }
         return Promise.reject();
+    },
+    forgotPassword: async (params) => {
+            try {
+                const resp = await fetch('/api/user/forgot', {
+                    method: "POST",
+                    body: JSON.stringify({
+                        email: params.email
+                    }),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                const datarsp = await resp.json()
+                if(datarsp.success){
+                    notificationProvider.open({message:`Check your email: ${params.email} for password recovery instructions`,key:"pchanges",type:"success"})
+                }else{
+                    notificationProvider.open({message:"Error changing forgot password",key:"pchagefe",type:"error"})
+                }
+            }catch (e) {
+                notificationProvider.open({message:`Error changing forgot password ${e}`,key:"ppchagefe",type:"error"})
+            }
+            return Promise.resolve("");
+        },
+    updatePassword: async (params) => {
+        try {
+            const resp = await fetch('/api/user/change', {
+                method: "POST",
+                body: JSON.stringify({
+                    userId: params.userId, password: params.password
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            const datarsp = await resp.json()
+            if(datarsp.success){
+                notificationProvider.open({message:"Password changed",key:"pchanges",type:"success"})
+            }else{
+                notificationProvider.open({message:"Error changing password",key:"pchagee",type:"error"})
+            }
+        }catch (e) {
+            notificationProvider.open({message:`Error changing password ${e}`,key:"ppchagee",type:"error"})
+        }
+
+        return Promise.resolve(false);
     },
 };

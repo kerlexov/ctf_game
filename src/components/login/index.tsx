@@ -1,6 +1,6 @@
 import React, {CSSProperties, useEffect, useState} from "react";
 import {
-    useAuthenticated,
+    useAuthenticated, useForgotPassword,
     useLogin,
     useNavigation,
     useRegister, useTranslate,
@@ -14,10 +14,10 @@ import {
     Form,
     Input,
     Button,
-    Checkbox, notificationProvider, Spin,
+    Checkbox, notificationProvider, Spin, useModal, Modal,
 } from "@pankod/refine-antd";
 import {ILoginForm, IRegisterForm} from "../../interfaces";
-import {hashData} from "../../utility";
+import {emailExpression, hashData} from "../../utility";
 import {LoadingOutlined} from "@ant-design/icons";
 
 const {Text, Title} = Typography;
@@ -33,7 +33,10 @@ const titleStyles: CSSProperties = {
     textOverflow: "unset",
     whiteSpace: "pre-wrap",
 };
-export const LoginScreen: React.FC = (context) => {
+type forgotPasswordVariables = {
+    email: string;
+};
+export const LoginScreen: React.FC = (props, context) => {
     const CreateAcc = (
         <Title level={3} style={titleStyles}>
             Create account
@@ -61,6 +64,11 @@ export const LoginScreen: React.FC = (context) => {
 
     const {isSuccess, isLoading} = useAuthenticated();
     const {list} = useNavigation()
+    const { modalProps, show, close } = useModal();
+    const [forgotEmail,setForgotEmail] = useState("")
+    const { mutate: forgotPassword } =
+        useForgotPassword<forgotPasswordVariables>();
+
 
     if(isRegisterSuccess && registerDone){
         notificationProvider.open({message:"Register successful",key:"regis",type:"success"})
@@ -131,29 +139,39 @@ export const LoginScreen: React.FC = (context) => {
                         />
                     </Form.Item>
                     <div style={{marginBottom: "12px"}}>
-                        {/*<Form.Item*/}
-                        {/*    name="remember"*/}
-                        {/*    valuePropName="checked"*/}
-                        {/*    noStyle*/}
-                        {/*>*/}
-                        {/*    <Checkbox*/}
-                        {/*        style={{*/}
-                        {/*            fontSize: "12px",*/}
-                        {/*        }}*/}
-                        {/*    >*/}
-                        {/*        Remember me*/}
-                        {/*    </Checkbox>*/}
-                        {/*</Form.Item>*/}
                         <a
                             style={{
                                 float: "right",
                                 fontSize: "12px",
                             }}
-                            href="#"
+                            onClick={()=>{
+                                show()
+                            }
+                            }
                         >
                             Forgot password?
                         </a>
                     </div>
+                    <Modal onOk={close} okButtonProps={{hidden:true}} cancelButtonProps={{hidden:true}} {...modalProps}>
+                        <Form style={{marginTop:"3em",width: "80%"}}>
+                            <Title style={{color:"black"}} level={5}>Password recovery</Title>
+                            <Input required type={"email"}  onChange={(c)=>{
+                                setForgotEmail(c.target.value)
+                            }} placeholder="********" />
+
+                            <Button style={{marginTop:"2em"}} onClick={(c)=>{
+                                if(emailExpression.test(forgotEmail)){
+                                    forgotPassword({email:forgotEmail})
+                                    setForgotEmail("")
+                                    close()
+                                }else {
+                                    notificationProvider.open({message:"Enter a valid email",key:"validemaile",type:"error"})
+                                    setForgotEmail("")
+                                }
+                            }
+                            } type={"primary"}>Change password</Button>
+                        </Form>
+                    </Modal>
                     <Button
                         type="primary"
                         size="large"
