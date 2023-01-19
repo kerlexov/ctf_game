@@ -43,7 +43,7 @@ export const ResetPage: React.FC = (props, context) => {
                     <Button style={{marginTop:"2em"}} onClick={async (c) => {
                         if (changeValue.length > 8) {
 
-                            const resp = await fetch('/api/vault/verify',{
+                            const resp = await fetch('/api/vault/validateForgot',{
                                 method: "POST",
                                 body: JSON.stringify({
                                     u,s,p:hashData(changeValue)
@@ -53,6 +53,8 @@ export const ResetPage: React.FC = (props, context) => {
                                 }
                             })
                             const datarsp = await resp.json()
+                            console.log("datarsp")
+                            console.log(datarsp)
                             if(datarsp.success){
                                 notificationProvider.open({
                                     message: "Password changed",
