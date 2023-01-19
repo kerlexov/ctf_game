@@ -7,11 +7,11 @@ export function hashData(data: string) {
     return SHA256(data).toString();
 }
 
-export function mask(name:string, identity: string) {
+export function mask(name: string, identity: string) {
     return hashData(`${name}_${sec}_${identity}`)
 }
 
-export function generateVaultKey({  name,  hashedData, salt }: {
+export function generateVaultKey({name, hashedData, salt}: {
     name: string;
     hashedData: string;
     salt: string;
@@ -21,7 +21,7 @@ export function generateVaultKey({  name,  hashedData, salt }: {
     }).toString();
 }
 
-export function decryptVault({ vaultKey,vault}: {
+export function decryptVault({vaultKey, vault}: {
     vaultKey: string;
     vault: string;
 }) {
@@ -35,7 +35,7 @@ export function decryptVault({ vaultKey,vault}: {
     }
 }
 
-export function encryptVault({vaultKey,vault }: {
+export function encryptVault({vaultKey, vault}: {
     vaultKey: string;
     vault: any;
 }) {

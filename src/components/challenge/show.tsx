@@ -1,21 +1,15 @@
-import {
-    BaseRecord,
-    GetOneResponse,
-    IResourceComponentsProps,
-    parseTableParamsFromQuery, useGetIdentity,
-    useOne,
-    useShow
-} from "@pankod/refine-core";
-import {Show, Typography, Tag, Button, Card, Input, Col, Row, notificationProvider} from "@pankod/refine-antd";
+import {GetOneResponse, IResourceComponentsProps, useGetIdentity,} from "@pankod/refine-core";
+import {Button, Card, Col, Input, notificationProvider, Row, Show, Tag, Typography} from "@pankod/refine-antd";
 import React, {useState} from "react";
 import {IChallenge, UploadFiles} from "../../interfaces";
-import { hashData} from "../../utility";
+import {hashData} from "../../utility";
 import {Convert} from "../../utility/convert";
-const { Title, Text } = Typography;
+
+const {Title, Text} = Typography;
 
 export const ChallengeShow: React.FC<
     IResourceComponentsProps<GetOneResponse<IChallenge>>
-    > = ({ initialData }) => {
+> = ({initialData}) => {
 
     const record = initialData?.data
     const [answer, setAnswer] = useState("")
@@ -23,15 +17,16 @@ export const ChallengeShow: React.FC<
 
     function RenderFiles(raw: any) {
         const uploadFiles = Convert.toUploadFiles(raw);
-        return uploadFiles.map((v:UploadFiles,i:number,a:UploadFiles[])=>{
-            return <><a href={v.url} download>
-                <button style={{margin:"2em"}}>Dowload file <Tag>{v.name}</Tag></button>
-            </a></>}
+        return uploadFiles.map((v: UploadFiles, i: number, a: UploadFiles[]) => {
+                return <><a href={v.url} download>
+                    <button style={{margin: "2em"}}>Dowload file <Tag>{v.name}</Tag></button>
+                </a></>
+            }
         )
     }
 
     return (
-        <Show title={record.name} headerButtons={({ defaultButtons }) => (<>{}</>)}>
+        <Show title={record.name} headerButtons={({defaultButtons}) => (<>{}</>)}>
             <Card>
                 <Row justify="start">
                     <Col span={4}>
@@ -48,11 +43,11 @@ export const ChallengeShow: React.FC<
                     </Col>
                     <Col span={4}>
                         <Title level={5}>Files</Title>
-                        <Text>{record?.files?<>
+                        <Text>{record?.files ? <>
                             {
                                 RenderFiles(record.files)
                             }
-                        </>:"File not uploaded"}</Text>
+                        </> : "File not uploaded"}</Text>
                     </Col>
                 </Row>
 
@@ -62,51 +57,62 @@ export const ChallengeShow: React.FC<
                 </Text>
             </Card>
 
-            <Card style={{marginTop:"2em"}}>
+            <Card style={{marginTop: "2em"}}>
                 <Input placeholder="Flag(THIS_IS_FLAG)" name="inputFlag"
-                   value={answer} onChange={(v)=>{
-                       setAnswer(v.target.value)
-                    }
+                       value={answer} onChange={(v) => {
+                    setAnswer(v.target.value)
+                }
                 }>
-
                 </Input>
-                <Button style={{marginTop:"2em"}} onClick={()=>{
-                    if(record?.name&&record.author_id&&answer&&identity&&record.points&&record.id){
-                        VerifyAnswer(record?.name!, record?.author_id!, answer, identity,record?.points!,record?.id!)
-                            .then((r) =>{
-                                if(r){
-                                    notificationProvider.open({message:"Congrats, challenge solved",key:"challenge_success",type:"success"})
-                                }else {
-                                    notificationProvider.open({message:"Wrong answer, try again",key:"challenge_fail",type:"error"})
+                <Button style={{marginTop: "2em"}} onClick={() => {
+                    if (record?.name && record.author_id && answer && identity && record.points && record.id) {
+                        VerifyAnswer(record?.name!, record?.author_id!, answer, identity, record?.points!, record?.id!)
+                            .then((r) => {
+                                if (r) {
+                                    notificationProvider.open({
+                                        message: "Congrats, challenge solved",
+                                        key: "challenge_success",
+                                        type: "success"
+                                    })
+                                } else {
+                                    notificationProvider.open({
+                                        message: "Wrong answer, try again",
+                                        key: "challenge_fail",
+                                        type: "error"
+                                    })
                                 }
                             })
-                            .catch((e)=>{
+                            .catch((e) => {
                                 console.log(e)
-                                notificationProvider.open({message:"Error occurred, try again",key:"challenge_err",type:"error"})
+                                notificationProvider.open({
+                                    message: "Error occurred, try again",
+                                    key: "challenge_err",
+                                    type: "error"
+                                })
                             })
                     }
                 }}>
                     SOLVE
                 </Button>
-
             </Card>
         </Show>
     );
 };
 
-export async function VerifyAnswer(name: string, author: string, flag: string, identity: string, points: number, cid: string){
+export async function VerifyAnswer(name: string, author: string, flag: string, identity: string, points: number, cid: string) {
     const encFlag = hashData(flag)
-    const resp = await fetch('/api/vault/verify',{
+    const resp = await fetch('/api/vault/verify', {
         method: "POST",
         body: JSON.stringify({
-            name,author,encFlag, identity, points,cid
+            name, author, encFlag, identity, points, cid
         }),
         headers: {
-            'Content-Type':'application/json'
+            'Content-Type': 'application/json'
         }
     })
     const datarsp = await resp.json()
     return datarsp.correct
 }
+
 export default ChallengeShow;
 

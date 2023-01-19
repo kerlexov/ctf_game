@@ -9,59 +9,63 @@ import {ProfileProps} from "../src/interfaces";
 import {checkAuthentications, hashData} from "../src/utility";
 
 
-const { Title } = Typography;
+const {Title} = Typography;
 type updatePasswordVariables = {
     userId: string;
     password: string;
 };
 export const ProfilePage: React.FC<ProfileProps> = (props, context) => {
-    const { mutate: updatePassword } =
+    const {mutate: updatePassword} =
         useUpdatePassword<updatePasswordVariables>();
 
-    const [changeValue,setChangeValue] = useState("")
+    const [changeValue, setChangeValue] = useState("")
     return <LayoutWrapper>
         <Row>
-            <Col span={12} >
+            <Col span={12}>
                 <Card
                     hoverable
-                    style={{ width: "100%", height: "33vh",backgroundColor: "#3d2442", color: "#fff" }}
+                    style={{width: "100%", height: "33vh", backgroundColor: "#3d2442", color: "#fff"}}
                 >
-                     <Form style={{marginTop:"3em",width: "80%"}}>
-                        <Title style={{color:"white"}} level={5}>Password change</Title>
-                        <Input minLength={8} maxLength={128} required type={"password"}  onChange={(c)=>{
+                    <Form style={{marginTop: "3em", width: "80%"}}>
+                        <Title style={{color: "white"}} level={5}>Password change</Title>
+                        <Input minLength={8} maxLength={128} required type={"password"} onChange={(c) => {
                             setChangeValue(c.target.value)
-                        }} placeholder="********" />
+                        }} placeholder="********"/>
 
-                        <Button style={{marginTop:"2em"}} onClick={(c)=>{
-                            if(changeValue.length>8){
-                                updatePassword({password:hashData(changeValue),userId:JSON.parse(props.identity)})
+                        <Button style={{marginTop: "2em"}} onClick={(c) => {
+                            if (changeValue.length > 8) {
+                                updatePassword({password: hashData(changeValue), userId: JSON.parse(props.identity)})
                                 setChangeValue("")
-                            }else {
-                                notificationProvider.open({message:"Password must be at least 8 characters",key:"pchageea",type:"error"})
+                            } else {
+                                notificationProvider.open({
+                                    message: "Password must be at least 8 characters",
+                                    key: "pchageea",
+                                    type: "error"
+                                })
                             }
                         }
                         } type={"primary"}>Change password</Button>
                     </Form>
                 </Card>
             </Col>
-            <Col span={12} >
+            <Col span={12}>
 
             </Col>
         </Row>
         <Row gutter={[2, 2]}>
-            <Col span={12} >
+            <Col span={12}>
 
             </Col>
-            <Col span={12} >
+            <Col span={12}>
 
             </Col>
         </Row>
 
     </LayoutWrapper>
 }
-export const getServerSideProps:  GetServerSideProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
     {
-        const { isAuthenticated, ...props } = await checkAuthentications(
+        const {isAuthenticated, ...props} = await checkAuthentications(
             authProvider,
             context,
         );
@@ -78,7 +82,7 @@ export const getServerSideProps:  GetServerSideProps = async (context) => {
             },
         };
     }
-    ;
+
 }
 
 export default ProfilePage;

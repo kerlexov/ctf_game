@@ -1,4 +1,5 @@
 import {teams} from "../../../../src/utility";
+
 const handler = async (req: any, res: any) => {
     if (req.method === 'POST') {
         try {
@@ -11,7 +12,7 @@ const handler = async (req: any, res: any) => {
                 })
 
             }
-        }catch (e) {
+        } catch (e) {
             res.status(200).json({success: false})
         }
         res.status(200).json({success: false})

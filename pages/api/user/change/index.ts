@@ -4,12 +4,12 @@ const handler = async (req: any, res: any) => {
     if (req.method === 'POST') {
         try {
             const promise = await users.updatePassword(req.body.userId, req.body.password)
-            if(promise) {
+            if (promise) {
                 res.status(200).json({success: true})
-            }else{
+            } else {
                 res.status(200).json({success: false})
             }
-        }catch (e) {
+        } catch (e) {
             res.status(200).json({success: false})
         }
     }

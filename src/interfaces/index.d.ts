@@ -1,5 +1,5 @@
 import {JwtPayload} from "jwt-decode";
-import VaultClient from "node-vault-client";
+
 export interface IChallengeBase {
     id: string;
     name: string;
@@ -10,11 +10,11 @@ export interface IChallengeBase {
     //challangeCategoryID: string;
 }
 
-export interface IChallenge extends IChallengeBase{
+export interface IChallenge extends IChallengeBase {
     files: IFile[]
 }
 
-export interface IChallengeCreate extends IChallengeBase{
+export interface IChallengeCreate extends IChallengeBase {
     flag: string
     files: string
 }
@@ -41,22 +41,23 @@ export interface IRegisterForm {
     create_password: string;
 }
 
-export interface ResultRecordData{
+export interface ResultRecordData {
     name: string
     points: number
 }
+
 export type ResultRecord = {
     [key: string]: number;
 }
 
 export interface UploadFiles {
-    uid:     string;
-    name:    string;
-    url:     string;
-    type:    string;
-    size:    number;
+    uid: string;
+    name: string;
+    url: string;
+    type: string;
+    size: number;
     percent: number;
-    status:  string;
+    status: string;
 }
 
 declare module 'jwt-decode' {

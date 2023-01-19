@@ -7,15 +7,14 @@ const handler = async (req: any, res: any) => {
             useri.users.map(async (u: any) => {
                 if (u.email === req.body.email) {
                     const promise = await account.createRecovery(u.email, 'https://ctf-game.vercel.app');
-                    if(promise){
+                    if (promise) {
                         res.status(200).json({success: true})
-                    }else{
+                    } else {
                         res.status(200).json({success: false})
                     }
                 }
             })
-
-        }catch (e) {
+        } catch (e) {
             res.status(200).json({success: false})
         }
     }

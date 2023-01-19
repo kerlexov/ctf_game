@@ -1,5 +1,5 @@
-import { AuthProvider } from "@pankod/refine-core";
-import { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
+import {AuthProvider} from "@pankod/refine-core";
+import {GetServerSidePropsContext, GetServerSidePropsResult} from "next";
 
 export const checkAuthentications = async (
     authProvider: AuthProvider,
@@ -29,7 +29,7 @@ export const checkAuthentications = async (
                 return "/login";
             }
 
-            if(context.resolvedUrl.includes("userId")&&context.resolvedUrl.includes("secret")&&context.resolvedUrl.includes("expire")){
+            if (context.resolvedUrl.includes("userId") && context.resolvedUrl.includes("secret") && context.resolvedUrl.includes("expire")) {
                 return `/reset?to=${encodeURIComponent(context.resolvedUrl)}`;
             }
 
@@ -45,5 +45,5 @@ export const checkAuthentications = async (
         };
     }
 
-    return { props: {}, isAuthenticated };
+    return {props: {}, isAuthenticated};
 };

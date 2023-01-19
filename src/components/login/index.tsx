@@ -1,27 +1,25 @@
-import React, {CSSProperties, useEffect, useState} from "react";
+import React, {CSSProperties, useState} from "react";
+import {useAuthenticated, useForgotPassword, useLogin, useNavigation, useRegister,} from "@pankod/refine-core";
 import {
-    useAuthenticated, useForgotPassword,
-    useLogin,
-    useNavigation,
-    useRegister, useTranslate,
-} from "@pankod/refine-core";
-import {
-    Row,
-    Col,
     AntdLayout,
+    Button,
     Card,
-    Typography,
+    Col,
     Form,
     Input,
-    Button,
-    Checkbox, notificationProvider, Spin, useModal, Modal,
+    Modal,
+    notificationProvider,
+    Row,
+    Spin,
+    Typography,
+    useModal,
 } from "@pankod/refine-antd";
 import {ILoginForm, IRegisterForm} from "../../interfaces";
 import {emailExpression, hashData} from "../../utility";
 import {LoadingOutlined} from "@ant-design/icons";
 
 const {Text, Title} = Typography;
-const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+const antIcon = <LoadingOutlined style={{fontSize: 24}} spin/>;
 
 const titleStyles: CSSProperties = {
     textAlign: "center",
@@ -64,19 +62,19 @@ export const LoginScreen: React.FC = (props, context) => {
 
     const {isSuccess, isLoading} = useAuthenticated();
     const {list} = useNavigation()
-    const { modalProps, show, close } = useModal();
-    const [forgotEmail,setForgotEmail] = useState("")
-    const { mutate: forgotPassword } =
+    const {modalProps, show, close} = useModal();
+    const [forgotEmail, setForgotEmail] = useState("")
+    const {mutate: forgotPassword} =
         useForgotPassword<forgotPasswordVariables>();
 
 
-    if(isRegisterSuccess && registerDone){
-        notificationProvider.open({message:"Register successful",key:"regis",type:"success"})
+    if (isRegisterSuccess && registerDone) {
+        notificationProvider.open({message: "Register successful", key: "regis", type: "success"})
         setIsLogin(true)
         setRegisterDone(false)
     }
-    if(isLoginSuccess || isSuccess){
-        notificationProvider.open({message:"Login successful",key:"logis",type:"success"})
+    if (isLoginSuccess || isSuccess) {
+        notificationProvider.open({message: "Login successful", key: "logis", type: "success"})
         list("challenge")
     }
 
@@ -101,7 +99,7 @@ export const LoginScreen: React.FC = (props, context) => {
             </Row>
         </AntdLayout>);
     } else {
-        return (<><Spin indicator={antIcon} /></>)
+        return (<><Spin indicator={antIcon}/></>)
     }
 
     function RenderLogin() {
@@ -110,8 +108,8 @@ export const LoginScreen: React.FC = (props, context) => {
                 <Form<ILoginForm>
                     layout="vertical"
                     form={loginForm}
-                    onFinish={(values)=>{
-                        login({email:values.email,password: hashData(values.password),remember: values.remember})
+                    onFinish={(values) => {
+                        login({email: values.email, password: hashData(values.password), remember: values.remember})
                     }}
                     requiredMark={true}
                     initialValues={{
@@ -144,7 +142,7 @@ export const LoginScreen: React.FC = (props, context) => {
                                 float: "right",
                                 fontSize: "12px",
                             }}
-                            onClick={()=>{
+                            onClick={() => {
                                 show()
                             }
                             }
@@ -152,20 +150,25 @@ export const LoginScreen: React.FC = (props, context) => {
                             Forgot password?
                         </a>
                     </div>
-                    <Modal onOk={close} okButtonProps={{hidden:true}} cancelButtonProps={{hidden:true}} {...modalProps}>
-                        <Form style={{marginTop:"3em",width: "80%"}}>
-                            <Title style={{color:"black"}} level={5}>Password recovery</Title>
-                            <Input required type={"email"}  onChange={(c)=>{
+                    <Modal onOk={close} okButtonProps={{hidden: true}}
+                           cancelButtonProps={{hidden: true}} {...modalProps}>
+                        <Form style={{marginTop: "3em", width: "80%"}}>
+                            <Title style={{color: "black"}} level={5}>Password recovery</Title>
+                            <Input required type={"email"} onChange={(c) => {
                                 setForgotEmail(c.target.value)
-                            }} placeholder="********" />
+                            }} placeholder="********"/>
 
-                            <Button style={{marginTop:"2em"}} onClick={(c)=>{
-                                if(emailExpression.test(forgotEmail)){
-                                    forgotPassword({email:forgotEmail})
+                            <Button style={{marginTop: "2em"}} onClick={(c) => {
+                                if (emailExpression.test(forgotEmail)) {
+                                    forgotPassword({email: forgotEmail})
                                     setForgotEmail("")
                                     close()
-                                }else {
-                                    notificationProvider.open({message:"Enter a valid email",key:"validemaile",type:"error"})
+                                } else {
+                                    notificationProvider.open({
+                                        message: "Enter a valid email",
+                                        key: "validemaile",
+                                        type: "error"
+                                    })
                                     setForgotEmail("")
                                 }
                             }
@@ -202,8 +205,12 @@ export const LoginScreen: React.FC = (props, context) => {
                     layout="vertical"
                     form={registerForm}
                     onFinish={(values) => {
-                        if(!registerDone){
-                            register({create_email:values.create_email,create_password:hashData(values.create_password),create_name: values.create_name})
+                        if (!registerDone) {
+                            register({
+                                create_email: values.create_email,
+                                create_password: hashData(values.create_password),
+                                create_name: values.create_name
+                            })
                             setRegisterDone(true)
                         }
                     }}

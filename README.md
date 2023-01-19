@@ -7,13 +7,15 @@
 </div>
 <br/>
 
-This [refine](https://github.com/pankod/refine) project was generated with [superplate](https://github.com/pankod/refine).
+This [refine](https://github.com/pankod/refine) project was generated
+with [superplate](https://github.com/pankod/refine).
 
 ## Getting Started
 
 **refine** is a React-based framework for building data-intensive applications in no time ✨
 
-Refine offers lots of out-of-the box functionality for rapid development, without compromising extreme customizability. Use-cases include, but are not limited to admin panels, B2B applications and dashboards.
+Refine offers lots of out-of-the box functionality for rapid development, without compromising extreme customizability.
+Use-cases include, but are not limited to admin panels, B2B applications and dashboards.
 
 ## Available Scripts
 
@@ -45,7 +47,6 @@ To learn more about **refine**, please check out the [Documentation](https://ref
 - **Custom Layout** [Docs](https://refine.dev/docs/ui-frameworks/antd/customization/antd-custom-layout/)
 - **KBar Command Palette** [Docs](https://github.com/pankod/refine/tree/next/examples/commandPalette/kbar)
 - **i18n** [Docs](https://refine.dev/docs/core/providers/i18n-provider/)
-
 
 ## License
 

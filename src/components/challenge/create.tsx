@@ -1,33 +1,20 @@
-import {
-    useForm,
-    Create,
-    Form,
-    Select,
-    Upload,
-    Input, RcFile, notificationProvider,
-} from "@pankod/refine-antd";
+import {Create, Form, Input, notificationProvider, RcFile, Select, Upload, useForm,} from "@pankod/refine-antd";
 import {IChallengeCreate} from "src/interfaces";
-import {
-    BUCKET_ID,
-    hashData,
-    normalizeFile,
-    resources,
-    storage
-} from "../../utility";
+import {BUCKET_ID, hashData, normalizeFile, resources, storage} from "../../utility";
 import {HttpError, IResourceComponentsProps, useGetIdentity, useNavigation} from "@pankod/refine-core";
 import {Permission, Role} from "appwrite";
 
 
 export const ChallengeCreate: React.FC<IResourceComponentsProps> = () => {
-    const { goBack } = useNavigation();
+    const {goBack} = useNavigation();
     const {formProps, saveButtonProps} = useForm<IChallengeCreate,
         HttpError,
         IChallengeCreate>(
-            {
+        {
             action: "create",
             resource: resources.challenge,
             redirect: false,
-            onMutationSuccess:  () => goBack(),
+            onMutationSuccess: () => goBack(),
         });
     const {data: identity} = useGetIdentity();
 
@@ -35,21 +22,21 @@ export const ChallengeCreate: React.FC<IResourceComponentsProps> = () => {
         <Create saveButtonProps={saveButtonProps}>
             <Form {...formProps} layout="vertical" onFinish={async (values) => {
                 const writeRes = await Write(values.name, identity, values.flag, values)
-                    if (writeRes) {
-                        notificationProvider.open({
-                            message: "Challenge created",
-                            key: "challenge_create_success",
-                            type: "success"
-                        })
-                        goBack()
-                    } else {
-                        notificationProvider.open({
-                            message: "Failed to create challenge",
-                            key: "challenge_create_fail",
-                            type: "error"
-                        })
-                        goBack()
-                    }
+                if (writeRes) {
+                    notificationProvider.open({
+                        message: "Challenge created",
+                        key: "challenge_create_success",
+                        type: "success"
+                    })
+                    goBack()
+                } else {
+                    notificationProvider.open({
+                        message: "Failed to create challenge",
+                        key: "challenge_create_fail",
+                        type: "error"
+                    })
+                    goBack()
+                }
             }}>
                 <Form.Item label="Name" name="name">
                     <Input/>
@@ -104,7 +91,7 @@ export const ChallengeCreate: React.FC<IResourceComponentsProps> = () => {
                                         BUCKET_ID,
                                         rcFile.uid,
                                         rcFile,
-                                        [ Permission.read(Role.any()), Permission.write(Role.team("admin", "admin"))]
+                                        [Permission.read(Role.any()), Permission.write(Role.team("admin", "admin"))]
                                     );
 
                                     const url = storage.getFileView(
@@ -128,7 +115,7 @@ export const ChallengeCreate: React.FC<IResourceComponentsProps> = () => {
     );
 };
 
-export async function Write(name: string, id: string, flag: string, values: IChallengeCreate){
+export async function Write(name: string, id: string, flag: string, values: IChallengeCreate) {
     const [isWritten] = await Promise.all([fetch('/api/vault/create', {
         method: "POST",
         body: JSON.stringify({
@@ -138,7 +125,7 @@ export async function Write(name: string, id: string, flag: string, values: ICha
             'Content-Type': 'application/json'
         }
     }).then(async (req) => {
-       return await req.json().then((res) => {
+        return await req.json().then((res) => {
             if (res.success) {
                 return true
             } else {
@@ -152,4 +139,5 @@ export async function Write(name: string, id: string, flag: string, values: ICha
 
     return isWritten
 }
+
 export default ChallengeCreate;
