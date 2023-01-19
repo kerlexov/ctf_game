@@ -1,7 +1,7 @@
 import {Create, Form, Input, notificationProvider, RcFile, Select, Upload, useForm,} from "@pankod/refine-antd";
 import {IChallengeCreate} from "src/interfaces";
 import {BUCKET_ID, hashData, normalizeFile, resources, storage} from "../../utility";
-import {HttpError, IResourceComponentsProps, useGetIdentity, useNavigation} from "@pankod/refine-core";
+import {HttpError, IResourceComponentsProps, useGetIdentity, useNavigation, usePermissions} from "@pankod/refine-core";
 import {Permission, Role} from "appwrite";
 
 
@@ -17,6 +17,10 @@ export const ChallengeCreate: React.FC<IResourceComponentsProps> = () => {
             onMutationSuccess: () => goBack(),
         });
     const {data: identity} = useGetIdentity();
+    const {data: permissionsData} = usePermissions();
+    if(!permissionsData?.includes("admin")){
+        goBack()
+    }
 
     return (
         <Create saveButtonProps={saveButtonProps}>
