@@ -80,18 +80,23 @@ export const authProvider: AuthProvider = {
         if (jwt && aid) {
             const decoded = jwt_decode<JwtPayloadCustom>(jwt);
             if (decoded && decoded.userId && decoded.sessionId && decoded.exp > Date.now() / 1000 && decoded.userId == aid) {
-                const resp = await fetch('/api/user/role', {
-                    method: "POST",
-                    body: JSON.stringify({
-                        userId: decoded.userId
-                    }),
-                    headers: {
-                        'Content-Type': 'application/json'
+                try{
+                    const resp = await fetch('/api/user/role', {
+                        method: "POST",
+                        body: JSON.stringify({
+                            userId: decoded.userId
+                        }),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                    const datarsp = await resp.json()
+                    console.log(datarsp)
+                    if (datarsp.success) {
+                        return Promise.resolve(["admin"])
                     }
-                })
-                const datarsp = await resp.json()
-                if (datarsp.success) {
-                    return Promise.resolve(["admin"])
+                }catch (e) {
+                    console.log(e)
                 }
             }
         }
