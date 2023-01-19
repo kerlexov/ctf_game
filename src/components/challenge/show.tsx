@@ -6,6 +6,15 @@ import {hashData} from "../../utility";
 import {Convert} from "../../utility/convert";
 
 const {Title, Text} = Typography;
+function RenderFiles(raw: any) {
+    const uploadFiles = Convert.toUploadFiles(raw);
+    return uploadFiles.map((v: UploadFiles, i: number, a: UploadFiles[]) => {
+            return <><a href={v.url} download>
+                <Button size={"large"} style={{margin: "2em"}}>Dowload file <Tag style={{marginLeft:"1em"}}>{v.name}</Tag></Button>
+            </a></>
+        }
+    )
+}
 
 export const ChallengeShow: React.FC<
     IResourceComponentsProps<GetOneResponse<IChallenge>>
@@ -14,16 +23,6 @@ export const ChallengeShow: React.FC<
     const record = initialData?.data
     const [answer, setAnswer] = useState("")
     const {data: identity} = useGetIdentity();
-
-    function RenderFiles(raw: any) {
-        const uploadFiles = Convert.toUploadFiles(raw);
-        return uploadFiles.map((v: UploadFiles, i: number, a: UploadFiles[]) => {
-                return <><a href={v.url} download>
-                    <button style={{margin: "2em"}}>Dowload file <Tag>{v.name}</Tag></button>
-                </a></>
-            }
-        )
-    }
 
     return (
         <Show title={record.name} headerButtons={() => (<>{}</>)}>
