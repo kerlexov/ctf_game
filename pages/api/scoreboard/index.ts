@@ -1,7 +1,6 @@
 import vaultClient from "../../../src/utility/vaultClient";
 import {ResultRecord, ResultRecordData} from "../../../src/interfaces";
-import {users} from "../../../src/utility/awnodeClient";
-import {hashData} from "../../../src/utility";
+import {hashData, users} from "../../../src/utility";
 
 
 const handler = async (req: any, res: any) => {

@@ -1,7 +1,6 @@
 import * as process from "process";
 const VaultClient = require("node-vault-client");
-
-const vaultClient = new VaultClient({
+export const vaultClient = new VaultClient({
     api: { url: process.env.VURL },
     auth: {
         type: 'appRole', // or 'token', 'iam'
@@ -9,4 +8,3 @@ const vaultClient = new VaultClient({
     },
 });
 
-export default vaultClient;

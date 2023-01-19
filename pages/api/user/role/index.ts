@@ -1,6 +1,4 @@
-import {teams} from "../../../../src/utility/awnodeClient";
-
-
+import {teams} from "../../../../src/utility";
 const handler = async (req: any, res: any) => {
     if (req.method === 'POST') {
         try {

@@ -3,9 +3,9 @@ import {AntdLayout, Row, Spin} from "@pankod/refine-antd";
 import {ResultRecordData, ScoreboardProps} from "../../interfaces";
 import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
 import {GetServerSideProps} from "next";
-import {checkAuthentication} from "@pankod/refine-nextjs-router";
 import {authProvider} from "../../authProvider";
 import {LoadingOutlined} from "@ant-design/icons";
+import {checkAuthentications} from "../../utility";
 
 export const HomeScreen: React.FC<ScoreboardProps> = (props, context) => {
     const antIcon = <LoadingOutlined style={{ fontSize: 64,color: "purple" }} spin />;
@@ -72,7 +72,7 @@ export const HomeScreen: React.FC<ScoreboardProps> = (props, context) => {
 };
 
 export const getServerSideProps:  GetServerSideProps<ScoreboardProps> = async (context) => {
-        const { isAuthenticated, ...props } = await checkAuthentication(
+        const { isAuthenticated, ...props } = await checkAuthentications(
             authProvider,
             context,
         );

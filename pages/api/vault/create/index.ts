@@ -1,9 +1,6 @@
-import {hashData, resources} from "../../../../src/utility";
+import {database, hashData, resources, options} from "../../../../src/utility";
+import {Permission, Role, ID} from "node-appwrite";
 import vaultClient from "../../../../src/utility/vaultClient";
-import {database} from "../../../../src/utility/awnodeClient";
-import {options} from "../../../../src/utility/appwriteClient";
-import {ID} from "appwrite";
-import {Permission, Role} from "node-appwrite";
 
 const handler = async (req: any, res: any) => {
     if (req.method === 'POST') {

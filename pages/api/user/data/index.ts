@@ -1,4 +1,3 @@
-import {users} from "../../../../src/utility/awnodeClient";
 
 const handler = async (req: any, res: any) => {
     if (req.method === 'GET') {

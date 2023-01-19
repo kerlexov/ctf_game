@@ -1,7 +1,7 @@
 import { AuthProvider } from "@pankod/refine-core";
 import { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
 
-export const checkAuthentication = async (
+export const checkAuthentications = async (
     authProvider: AuthProvider,
     context: GetServerSidePropsContext,
 ): Promise<

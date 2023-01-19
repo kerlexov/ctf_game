@@ -4,7 +4,6 @@ import nookies from "nookies";
 import {ID} from "appwrite";
 import {ILoginForm, IRegisterForm} from "./interfaces";
 import jwt_decode, {JwtPayload, JwtPayloadCustom} from 'jwt-decode';
-import {teams, users} from "./utility/awnodeClient";
 import {notificationProvider} from "@pankod/refine-antd";
 
 2

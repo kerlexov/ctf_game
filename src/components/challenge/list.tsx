@@ -11,7 +11,6 @@ import {dataProvider} from "@pankod/refine-appwrite";
 import {GetServerSideProps} from "next";
 import React from "react";
 import {IChallenge} from "../../interfaces";
-import {checkAuthentication} from "@pankod/refine-nextjs-router";
 import {authProvider} from "../../authProvider";
 import {Permission, Role} from "appwrite";
 

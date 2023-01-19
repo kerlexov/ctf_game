@@ -1,4 +1,4 @@
-import {users} from "../../../../src/utility/awnodeClient";
+import {users} from "../../../../src/utility";
 
 const handler = async (req: any, res: any) => {
     if (req.method === 'POST') {

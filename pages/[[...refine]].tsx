@@ -1,13 +1,12 @@
 import { GetServerSideProps } from "next";
 import {
-  checkAuthentication,
   handleRefineParams,
   NextRouteComponent
 } from "@pankod/refine-nextjs-router";
 
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import {authProvider} from "../src/authProvider";
-import {customDataProvider, parseResource} from "../src/utility";
+import {checkAuthentications, customDataProvider, parseResource} from "../src/utility";
 
 export const getServerSideProps: GetServerSideProps<
     { initialData?: unknown },
@@ -15,7 +14,7 @@ export const getServerSideProps: GetServerSideProps<
     > = async (context) => {
   const { resource, action, id } = handleRefineParams(context.params?.refine);
 
-  const { isAuthenticated, ...props } = await checkAuthentication(
+  const { isAuthenticated, ...props } = await checkAuthentications(
       authProvider,
       context,
   );

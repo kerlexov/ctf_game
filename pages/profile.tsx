@@ -6,8 +6,7 @@ import nookies from "nookies";
 import {serverSideTranslations} from "next-i18next/serverSideTranslations";
 import {GetServerSideProps} from "next";
 import {ProfileProps} from "../src/interfaces";
-import {hashData} from "../src/utility";
-import {checkAuthentication} from "@pankod/refine-nextjs-router";
+import {checkAuthentications, hashData} from "../src/utility";
 
 
 const { Title } = Typography;
@@ -62,7 +61,7 @@ export const ProfilePage: React.FC<ProfileProps> = (props, context) => {
 }
 export const getServerSideProps:  GetServerSideProps = async (context) => {
     {
-        const { isAuthenticated, ...props } = await checkAuthentication(
+        const { isAuthenticated, ...props } = await checkAuthentications(
             authProvider,
             context,
         );
