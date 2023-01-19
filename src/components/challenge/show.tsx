@@ -58,7 +58,7 @@ export const ChallengeShow: React.FC<
             </Card>
 
             <Card style={{marginTop: "2em"}}>
-                <Input placeholder="Flag(THIS_IS_FLAG)" name="inputFlag"
+                <Input placeholder="Enter solution" name="inputFlag"
                        value={answer} onChange={(v) => {
                     setAnswer(v.target.value)
                 }
