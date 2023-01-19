@@ -15,8 +15,10 @@ const handler = async (req: any, res: any) => {
                 }
             })
         } catch (e) {
-            res.status(200).json({success: false})
+            res.status(400).json({success: false, e})
         }
+    }else{
+        res.status(400)
     }
 }
 

@@ -31,10 +31,14 @@ const handler = async (req: any, res: any) => {
             const done = await Promise.all([createPromis, vaultPromise])
             if (done) {
                 res.status(200).json({success: true})
+            }else{
+                res.status(200).json({success: false})
             }
         } catch (e) {
             res.status(500).json({err: e})
         }
+    }else{
+        res.status(400)
     }
 }
 

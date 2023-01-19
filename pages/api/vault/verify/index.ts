@@ -3,6 +3,7 @@ import {vaultClient} from "../../../../src/utility/vaultClient";
 
 const handler = async (req: any, res: any) => {
     if (req.method === 'POST') {
+        try{
         const r = await vaultClient.read(`secret/data/ctf/app/${hashData(req.body.name)}`)
         if (r && r.__data.data) {
             if (req.body.encFlag === r.__data.data.encFlag) {
@@ -13,8 +14,13 @@ const handler = async (req: any, res: any) => {
                 res.status(200).json({correct: false})
             }
         } else {
-            res.status(500).json({err: "nodata"})
+            res.status(200).json({correct: false})
         }
+        }catch (e) {
+            res.status(400).json({correct: false, e})
+        }
+    }else{
+        res.status(400)
     }
 }
 
