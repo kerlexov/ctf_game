@@ -41,74 +41,91 @@ export const authProvider: AuthProvider = {
     register: ({create_email, create_password, create_name}) => {
         return Register({create_email, create_password, create_name})
     },
-    logout: (ctx) => {
-        nookies.destroy(ctx, "a");
-        nookies.destroy(ctx, "c");
-        const nes = account.deleteSession("current");
-        nes.catch((err) => {
-            console.log(err)
-            console.log("lgout AP error")
-            return Promise.reject()
-        })
-
-        return Promise.resolve();
-    },
-    checkAuth: (ctx) => {
-        const jwt = JSON.parse(nookies.get(ctx)["c"]);
-        const aid = JSON.parse(nookies.get(ctx)["a"]);
-        if (jwt && aid) {
-            const decoded = jwt_decode<JwtPayloadCustom>(jwt);
-            if (decoded && decoded.userId && decoded.sessionId && decoded.exp > Date.now() / 1000 && decoded.userId == aid) {
-                return Promise.resolve(jwt)
+    logout: async (ctx) => {
+        const jwtc = nookies.get(ctx)["c"];
+        const jwta = nookies.get(ctx)["a"];
+        if (jwtc&&jwta&&jwtc.length > 0 && jwta.length > 0) {
+            const jwt = JSON.parse(jwtc);
+            const aid = JSON.parse(jwta);
+            nookies.destroy(ctx, "a");
+            nookies.destroy(ctx, "c");
+            if (jwt && aid) {
+                const decoded = jwt_decode<JwtPayloadCustom>(jwt);
+                if (decoded && decoded.userId && decoded.sessionId && decoded.exp > Date.now() / 1000 && decoded.userId == aid) {
+                    await account.deleteSession(decoded.sessionId).catch(() => {
+                        Promise.reject()
+                    });
+                    return Promise.resolve()
+                }
             }
         }
-        nookies.destroy(ctx, "c");
-        nookies.destroy(ctx, "a");
+        return Promise.reject();
+    },
+    checkAuth: (ctx) => {
+        const jwtc = nookies.get(ctx)["c"];
+        const jwta = nookies.get(ctx)["a"];
+        if (jwtc&&jwta&&jwtc.length > 0 && jwta.length > 0) {
+            const jwt = JSON.parse(jwtc);
+            const aid = JSON.parse(jwta);
+            if (jwt && aid) {
+                const decoded = jwt_decode<JwtPayloadCustom>(jwt);
+                if (decoded && decoded.userId && decoded.sessionId && decoded.exp > Date.now() / 1000 && decoded.userId == aid) {
+                    return Promise.resolve(jwt)
+                }
+            }
+            nookies.destroy(ctx, "c");
+            nookies.destroy(ctx, "a");
+        }
         return Promise.reject();
     },
     checkError: (error) => {
-        if (error.statusCode === 401) {
+        if (error.statusCode !== 200) {
             return Promise.reject("/login");
         }
-        console.log("checkError auth not 401")
-        console.log(error)
         return Promise.resolve();
     },
     getPermissions: async (ctx) => {
-        const jwt = JSON.parse(nookies.get(ctx)["c"]);
-        const aid = JSON.parse(nookies.get(ctx)["a"]);
-        if (jwt && aid) {
-            const decoded = jwt_decode<JwtPayloadCustom>(jwt);
-            if (decoded && decoded.userId && decoded.sessionId && decoded.exp > Date.now() / 1000 && decoded.userId == aid) {
-                try{
-                    const resp = await fetch('/api/user/role', {
-                        method: "POST",
-                        body: JSON.stringify({
-                            userId: decoded.userId
-                        }),
-                        headers: {
-                            'Content-Type': 'application/json'
+        const jwtc = nookies.get(ctx)["c"];
+        const jwta = nookies.get(ctx)["a"];
+        if (jwtc&&jwta&&jwtc.length > 0 && jwta.length > 0) {
+            const jwt = JSON.parse(jwtc);
+            const aid = JSON.parse(jwta);
+            if (jwt && aid) {
+                const decoded = jwt_decode<JwtPayloadCustom>(jwt);
+                if (decoded && decoded.userId && decoded.sessionId && decoded.exp > Date.now() / 1000 && decoded.userId == aid) {
+                    try {
+                        const resp = await fetch('/api/user/role', {
+                            method: "POST",
+                            body: JSON.stringify({
+                                userId: decoded.userId
+                            }),
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                        const datarsp = await resp.json()
+                        if (datarsp.success) {
+                            return Promise.resolve(["admin"])
                         }
-                    })
-                    const datarsp = await resp.json()
-                    console.log(datarsp)
-                    if (datarsp.success) {
-                        return Promise.resolve(["admin"])
+                    } catch (e) {
+                        return Promise.reject()
                     }
-                }catch (e) {
-                    console.log(e)
                 }
             }
         }
         return Promise.resolve([])
     },
     getUserIdentity: (ctx) => {
-        const jwt = JSON.parse(nookies.get(ctx)["c"]);
-        const aid = JSON.parse(nookies.get(ctx)["a"]);
-        if (jwt && aid) {
-            const decoded = jwt_decode<JwtPayloadCustom>(jwt);
-            if (decoded && decoded.userId && decoded.sessionId && decoded.exp > Date.now() / 1000 && decoded.userId == aid) {
-                return Promise.resolve(decoded.userId)
+        const jwtc = nookies.get(ctx)["c"];
+        const jwta = nookies.get(ctx)["a"];
+        if (jwtc&&jwta&&jwtc.length > 0 && jwta.length > 0) {
+            const jwt = JSON.parse(jwtc);
+            const aid = JSON.parse(jwta);
+            if (jwt && aid) {
+                const decoded = jwt_decode<JwtPayloadCustom>(jwt);
+                if (decoded && decoded.userId && decoded.sessionId && decoded.exp > Date.now() / 1000 && decoded.userId == aid) {
+                    return Promise.resolve(decoded.userId)
+                }
             }
         }
         return Promise.reject();

@@ -82,7 +82,6 @@ export const ChallengeShow: React.FC<
                                 }
                             })
                             .catch((e) => {
-                                console.log(e)
                                 notificationProvider.open({
                                     message: "Error occurred, try again",
                                     key: "challenge_err",

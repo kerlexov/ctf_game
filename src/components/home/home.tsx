@@ -39,7 +39,6 @@ export const HomeScreen: React.FC<ScoreboardProps> = (props, context) => {
                     setLoaded(true)
                 })
             }).catch((e) => {
-                console.log(e)
                 setData([])
                 setLoaded(true)
             })

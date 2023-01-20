@@ -147,7 +147,6 @@ export async function Write(name: string, id: string, flag: string, values: ICha
                 return false
             }
         }).catch((e) => {
-            console.log(e)
             return false
         })
     })])
