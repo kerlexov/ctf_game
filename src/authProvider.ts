@@ -52,9 +52,6 @@ export const authProvider: AuthProvider = {
             if (jwt && aid) {
                 const decoded = jwt_decode<JwtPayloadCustom>(jwt);
                 if (decoded && decoded.userId && decoded.sessionId && decoded.exp > Date.now() / 1000 && decoded.userId == aid) {
-                    await account.deleteSession(decoded.sessionId).catch(() => {
-                        Promise.reject()
-                    });
                     return Promise.resolve()
                 }
             }
